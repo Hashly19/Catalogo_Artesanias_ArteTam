@@ -2,7 +2,7 @@
 
 ¡Bienvenido a **ArteTam**! Este proyecto es un **catálogo interactivo web** diseñado para promover y exhibir artesanías regionales del estado de Tamaulipas, conectando a clientes, artesanos y administradores en una sola plataforma.
 
-Este repositorio contiene una aplicación web frontend estructurada con **HTML5, CSS3 y JavaScript vanilla**, fácil de ejecutar sin necesidad de instalar servidores complejos ni dependencias pesadas.
+Este repositorio contiene una aplicación web frontend estructurada con **HTML5, CSS3 y JavaScript**, fácil de ejecutar sin necesidad de instalar servidores complejos ni dependencias pesadas.
 
 ---
 
