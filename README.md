@@ -55,7 +55,7 @@ Catalogo_Artesanias_ArteTam/
 
 ---
 
-## 🛠️ Requisitos Previos
+##  Requisitos Previos
 
 No necesitas conocimientos avanzados de programación ni instalar bases de datos para probar este proyecto. Únicamente necesitas:
 
