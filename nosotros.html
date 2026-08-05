@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteTam | Nosotros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR COMPLETA -->
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html">
+            <i class="bi bi-palette-fill me-2"></i>ArteTam
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle" style="width:40px;height:40px;padding:0;" aria-label="Cambiar tema">
+                    <i class="bi bi-moon-fill" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Nosotros -->
+<section class="py-5 bg-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 fade-in-up">
+                <span class="badge mb-3 px-3 py-2 rounded-pill"
+                      style="background:var(--card-color);color:var(--primary);border:1px solid var(--border-color);">
+                    <i class="bi bi-people-fill me-1"></i> Nuestra Historia
+                </span>
+                <h1 class="fw-bold display-5 mb-4">Conectando talento artesanal con el mundo</h1>
+                <p class="lead mb-4" style="color:var(--text-muted);">
+                    ArteTam nació de la profunda admiración por las manos creadoras de Tamaulipas. Comenzamos como un proyecto de documentación visual y hoy somos un puente que conecta el talento rural con compradores de todo México.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="catalogo.html" class="btn btn-primary-custom px-4">
+                        <i class="bi bi-grid me-2"></i>Ver Catálogo
+                    </a>
+                    <a href="contacto.html" class="btn btn-outline-custom px-4">
+                        <i class="bi bi-envelope me-2"></i>Contáctanos
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=800&auto=format&fit=crop"
+                     alt="Artesanos trabajando" class="img-fluid rounded-4 shadow-lg" style="object-fit:cover;max-height:420px;width:100%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Misión y Visión -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-2">Lo que nos mueve</h2>
+        <p class="text-center mb-5" style="color:var(--text-muted);">Nuestros principios como plataforma artesanal</p>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 benefit-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div style="width:52px;height:52px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-bullseye fs-4" style="color:#fff;"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-0">Misión</h3>
+                    </div>
+                    <p style="color:var(--text-muted);">Preservar y difundir las técnicas artesanales de Tamaulipas, garantizando un comercio justo y reconocimiento directo al artista que crea con sus manos.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 p-4 h-100 benefit-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div style="width:52px;height:52px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-eye fs-4" style="color:#fff;"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-0">Visión</h3>
+                    </div>
+                    <p style="color:var(--text-muted);">Ser el catálogo digital de referencia para la exhibición y venta del patrimonio cultural artesanal de nuestra región, conectando compradores y creadores sin intermediarios.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estadísticas -->
+<section class="py-5 bg-section">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="seller-stat-card">
+                    <div class="stat-number" id="stat-artesanos">3+</div>
+                    <div class="stat-label">Artesanos registrados</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="seller-stat-card">
+                    <div class="stat-number">287</div>
+                    <div class="stat-label">Ventas facilitadas</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="seller-stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Municipios tamaulipecos</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="seller-stat-card">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">Calificación promedio</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nuestro equipo artesanal -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-2">Los Artesanos de ArteTam</h2>
+        <p class="text-center mb-5" style="color:var(--text-muted);">Conoce a los creadores detrás de cada pieza única</p>
+        <div class="row g-4 justify-content-center" id="artesanos-nosotros"></div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white py-4">
+    <div class="container text-center">
+        <small style="color:rgba(255,255,255,.5);">&copy; 2026 ArteTam. Todos los derechos reservados.</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const artesanos = getArtesanos();
+    const productos  = getProductos();
+    const grid = document.getElementById('artesanos-nosotros');
+
+    artesanos.filter(a => a.activo !== false).forEach(a => {
+        const n = productos.filter(p => p.vendedorId === a.id).length;
+        grid.innerHTML += `
+            <div class="col-sm-6 col-lg-4">
+                <a href="seller.html?id=${a.id}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100 benefit-card text-center" style="cursor:pointer;">
+                        <img src="${a.avatar}" alt="${a.nombre}"
+                             class="rounded-circle mx-auto mb-3 border border-3 border-primary-custom"
+                             width="90" height="90" style="object-fit:cover;">
+                        <h5 class="fw-bold mb-1">${a.nombre}</h5>
+                        <p class="small mb-2 text-primary-custom fw-semibold">${a.especialidad}</p>
+                        <p class="small mb-2" style="color:var(--text-muted);">
+                            <i class="bi bi-geo-alt me-1"></i>${a.ubicacion}
+                        </p>
+                        <p class="small mb-3" style="color:var(--text-muted);">${a.bio.substring(0, 90)}…</p>
+                        <div class="d-flex justify-content-center gap-3 mb-3">
+                            <span class="small" style="color:var(--text-muted);">
+                                <i class="bi bi-box-seam me-1 text-primary-custom"></i>${n} producto${n!==1?'s':''}
+                            </span>
+                            <span class="small" style="color:var(--text-muted);">
+                                <i class="bi bi-star-fill me-1 text-warning"></i>${a.calificacion}
+                            </span>
+                        </div>
+                        <span class="btn btn-outline-custom btn-sm rounded-pill px-3 mt-auto">
+                            Ver perfil <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+                    </div>
+                </a>
+            </div>`;
+    });
+});
+</script>
+</body>
+</html>

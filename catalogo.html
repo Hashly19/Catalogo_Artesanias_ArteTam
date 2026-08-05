@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo de artesanías de Tamaulipas — filtra, busca y contacta directamente al artesano.">
+    <title>ArteTam | Catálogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html">
+            <i class="bi bi-palette-fill me-2"></i>ArteTam
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle"
+                        style="width:40px;height:40px;padding:0;" aria-label="Cambiar tema">
+                    <i class="bi bi-moon-fill" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO MINI -->
+<section class="py-4 bg-section border-bottom" style="border-color:var(--border-color)!important;">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <h1 class="fw-bold mb-1" style="font-size:1.75rem;">
+                    <i class="bi bi-grid-fill me-2 text-primary-custom"></i>Catálogo de Productos
+                </h1>
+                <p class="mb-0" style="color:var(--text-muted);">Filtra por categoría o busca una artesanía específica</p>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item">
+                        <a href="index.html" class="text-primary-custom text-decoration-none">Inicio</a>
+                    </li>
+                    <li class="breadcrumb-item active" style="color:var(--text-muted);">Catálogo</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- FILTROS + BÚSQUEDA -->
+<div class="container py-4">
+    <div class="row align-items-center g-3 mb-4">
+        <div class="col-md-8">
+            <div class="d-flex flex-wrap gap-2" id="category-filters">
+                <!-- Generado por JS -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text border-end-0">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" id="search-input" class="form-control border-start-0"
+                       placeholder="Buscar artesanía...">
+            </div>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="row g-4" id="catalog-grid"></div>
+</div>
+
+<!-- MODAL: VISTA PREVIA DE PRODUCTO -->
+<div class="modal fade" id="modalProductoView" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content"
+             style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="pv-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <img id="pv-main-img" src="" alt=""
+                             style="width:100%;height:320px;object-fit:cover;border-radius:14px;cursor:zoom-in;"
+                             class="mb-2">
+                        <div class="d-flex flex-wrap gap-2" id="pv-thumbs"></div>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column">
+                        <span id="pv-badge" class="badge rounded-pill mb-2 align-self-start"
+                              style="background:var(--section-bg);color:var(--primary);border:1px solid var(--border-color);font-size:.75rem;"></span>
+                        <h4 class="fw-bold mb-1" id="pv-nombre"></h4>
+                        <p class="fw-bold fs-5 text-primary-custom mb-1" id="pv-precio"></p>
+                        <div class="mb-2" id="pv-stock-badge"></div>
+                        <p class="mb-3" id="pv-desc" style="color:var(--text-muted);line-height:1.75;"></p>
+                        <div class="mb-3" id="pv-caract"></div>
+                        <div class="mb-2 small" id="pv-vendedor" style="color:var(--text-muted);"></div>
+                        <div class="mt-auto d-flex flex-column gap-2" id="pv-botones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-5 mt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-palette-fill me-2"></i>ArteTam</h4>
+                <p style="color:rgba(255,255,255,.6);">Exhibiendo la magia, tradición y color de las manos artesanas de Tamaulipas al mundo.</p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Menú Rápido</h5>
+                <ul class="list-unstyled" style="color:rgba(255,255,255,.6);">
+                    <li class="mb-2"><a href="index.html"    class="text-decoration-none" style="color:inherit;">Inicio</a></li>
+                    <li class="mb-2"><a href="catalogo.html" class="text-decoration-none" style="color:inherit;">Catálogo</a></li>
+                    <li class="mb-2"><a href="galeria.html"  class="text-decoration-none" style="color:inherit;">Galería</a></li>
+                    <li class="mb-2"><a href="nosotros.html" class="text-decoration-none" style="color:inherit;">Nosotros</a></li>
+                    <li class="mb-2"><a href="contacto.html" class="text-decoration-none" style="color:inherit;">Contacto</a></li>
+                    <li class="mb-2"><a href="login.html"    class="text-decoration-none" style="color:inherit;">Acceso Vendedores</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Contacto Administrativo</h5>
+                <ul class="list-unstyled" style="color:rgba(255,255,255,.6);">
+                    <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>Cd. Victoria, Tamaulipas</li>
+                    <li class="mb-2"><i class="bi bi-telephone me-2"></i>+52 12 3456 7890</li>
+                    <li class="mb-2"><i class="bi bi-envelope me-2"></i>info@artetam.com</li>
+                    <li class="mt-3"><small>Lunes a Viernes: 9am – 6pm</small></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="border-secondary mt-4 mb-3">
+        <div class="text-center" style="color:rgba(255,255,255,.5);">
+            <small>&copy; 2026 ArteTam. Todos los derechos reservados. Plataforma de exhibición artesanal.</small>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const productos  = getProductos();
+    const categorias = getCategorias();
+
+    /* ── Modal vista previa ── */
+    window.verProducto = function(id) {
+        const p = getProducto(id); if (!p) return;
+        const s = getStock(p.id);
+        const agotado = s === 0;
+        const todas = [p.img, ...(p.galeria || [])].filter(Boolean);
+        const cat = categorias.find(c => c.id === p.cat) || { label: p.cat };
+
+        document.getElementById('pv-title').textContent  = p.nombre;
+        document.getElementById('pv-nombre').textContent = p.nombre;
+        document.getElementById('pv-precio').textContent = formatPrecio(p.precio);
+        document.getElementById('pv-desc').textContent   = p.descripcion;
+        document.getElementById('pv-badge').textContent  = cat.label;
+        document.getElementById('pv-vendedor').innerHTML =
+            `<i class="bi bi-person-circle me-1"></i>Artesano: <a href="seller.html?id=${p.vendedorId}" class="text-primary-custom text-decoration-none fw-semibold">${p.vendedor}</a>`;
+
+        const sc = s===0?'pill-out':s<=3?'pill-low':'pill-ok';
+        const st = s===0?'<i class="bi bi-x-circle me-1"></i>Agotado'
+                 : s<=3?`<i class="bi bi-fire me-1"></i>Últimas ${s} unidades`
+                 : `<i class="bi bi-check-circle me-1"></i>${s} unidades disponibles`;
+        document.getElementById('pv-stock-badge').innerHTML = `<span class="stock-pill ${sc}">${st}</span>`;
+
+        document.getElementById('pv-main-img').src = todas[0] || '';
+        document.getElementById('pv-thumbs').innerHTML = todas.map((url, i) => `
+            <img src="${url}" alt="${p.nombre} ${i+1}"
+                 style="width:70px;height:70px;object-fit:cover;border-radius:9px;cursor:pointer;border:2px solid ${i===0?'var(--primary)':'transparent'};transition:border-color .2s;"
+                 onclick="swapPvImg(this,'${url}')"
+                 onerror="this.style.display='none'">`).join('');
+
+        const caract = p.caracteristicas || [];
+        document.getElementById('pv-caract').innerHTML = caract.length
+            ? `<p class="fw-semibold mb-2 small" style="color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">Características</p>
+               <div class="d-flex flex-wrap gap-2">
+                   ${caract.map(c => `<span style="display:inline-flex;align-items:center;gap:.35rem;background:var(--section-bg);border:1px solid var(--border-color);border-radius:8px;padding:.3rem .7rem;font-size:.8rem;color:var(--text-color);"><i class="bi bi-check2 text-primary-custom"></i>${c}</span>`).join('')}
+               </div>` : '';
+
+        document.getElementById('pv-botones').innerHTML = agotado
+            ? `<button class="btn btn-secondary rounded-3 w-100" disabled><i class="bi bi-slash-circle me-2"></i>Producto agotado</button>
+               <a href="seller.html?id=${p.vendedorId}" class="btn btn-outline-custom rounded-3 w-100"><i class="bi bi-person-circle me-2"></i>Ver perfil del artesano</a>`
+            : `<a href="https://wa.me/${waNumber(p.cel)}?text=Hola,%20me%20interesa%20el%20producto:%20${encodeURIComponent(p.nombre)}"
+                  target="_blank" class="btn btn-success rounded-3 w-100">
+                   <i class="bi bi-whatsapp me-2"></i>Contactar por WhatsApp
+               </a>
+               <a href="mailto:${p.email}?subject=Consulta%20sobre%20${encodeURIComponent(p.nombre)}"
+                  class="btn btn-outline-custom rounded-3 w-100">
+                   <i class="bi bi-envelope me-2"></i>Enviar correo
+               </a>
+               <a href="seller.html?id=${p.vendedorId}" class="btn rounded-3 w-100"
+                  style="border:2px solid var(--border-color);color:var(--text-muted);background:transparent;">
+                   <i class="bi bi-person-circle me-2"></i>Ver perfil del artesano
+               </a>`;
+
+        new bootstrap.Modal(document.getElementById('modalProductoView')).show();
+    };
+
+    window.swapPvImg = function(thumb, url) {
+        document.getElementById('pv-main-img').src = url;
+        document.querySelectorAll('#pv-thumbs img').forEach(t => t.style.borderColor = 'transparent');
+        thumb.style.borderColor = 'var(--primary)';
+    };
+
+    /* ── Render catálogo ── */
+    const catalogGrid = document.getElementById('catalog-grid');
+
+    function pillBadgeHTML(stock) {
+        const color = stock===0 ? '#dc3545' : stock<=3 ? '#ff9800' : 'rgba(25,135,84,.9)';
+        const text  = stock===0
+            ? '<i class="bi bi-x-circle me-1"></i>SOLD OUT'
+            : stock<=3 ? `<i class="bi bi-fire me-1"></i>Últimas ${stock}`
+            : `<i class="bi bi-check-circle me-1"></i>${stock} disponibles`;
+        return `<span class="position-absolute top-0 end-0 m-2 px-2 py-1 rounded-pill fw-bold catalog-stock-pill"
+                      style="background:${color};color:#fff;font-size:.68rem;">${text}</span>`;
+    }
+
+    function renderCatalog(items) {
+        catalogGrid.innerHTML = '';
+        const visible = items.filter(p => p.visible !== false);
+        if (!visible.length) {
+            catalogGrid.innerHTML = `<div class="col-12 text-center py-5">
+                <i class="bi bi-search display-4" style="color:var(--text-muted);"></i>
+                <p class="mt-3" style="color:var(--text-muted);">No se encontraron productos.</p>
+            </div>`;
+            return;
+        }
+        visible.forEach(prod => {
+            const stock   = getStock(prod.id);
+            const agotado = stock === 0;
+            const extra   = (prod.galeria || []).length;
+            const overlay = agotado
+                ? `<div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center"
+                        style="background:rgba(0,0,0,.45);top:0;left:0;border-radius:16px 16px 0 0;">
+                       <span style="color:#fff;font-size:1.3rem;font-weight:700;letter-spacing:.1em;">SOLD OUT</span>
+                   </div>` : '';
+            const contactBtns = agotado
+                ? `<button class="btn btn-catalog-disabled btn-sm rounded-3 w-100" disabled>
+                       <i class="bi bi-slash-circle me-2"></i>Agotado
+                   </button>`
+                : `<a href="https://wa.me/${waNumber(prod.cel)}?text=Hola,%20me%20interesa:%20${encodeURIComponent(prod.nombre)}"
+                      target="_blank" class="btn btn-success btn-sm rounded-3 w-100">
+                       <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                   </a>`;
+
+            catalogGrid.innerHTML += `
+            <div class="col-sm-6 col-md-4 col-lg-3 fade-in-up">
+                <div class="card h-100 product-card rounded-4 border-0 shadow-sm${agotado ? ' sold-out-card' : ''}">
+                    <div class="position-relative overflow-hidden" style="border-radius:16px 16px 0 0;cursor:pointer;"
+                         onclick="verProducto(${prod.id})">
+                        <img src="${prod.img}" class="card-img-top" alt="${prod.nombre}"
+                             style="height:210px;object-fit:cover;${agotado ? 'filter:grayscale(.5);' : ''}">
+                        ${overlay}
+                        <span class="badge position-absolute top-0 start-0 m-2 px-2 py-1 rounded-pill"
+                              style="background:var(--primary);color:#fff;font-size:.68rem;">
+                            ${prod.cat.toUpperCase()}
+                        </span>
+                        ${pillBadgeHTML(stock)}
+                        ${extra ? `<span class="position-absolute bottom-0 end-0 m-2 px-2 py-1 rounded-pill"
+                                         style="background:rgba(0,0,0,.55);color:#fff;font-size:.68rem;">
+                                       <i class="bi bi-images me-1"></i>${extra + 1} fotos
+                                   </span>` : ''}
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <h5 class="card-title mb-1 fw-bold" style="font-size:.93rem;cursor:pointer;"
+                            onclick="verProducto(${prod.id})">${prod.nombre}</h5>
+                        <p class="fw-bold mb-1 text-primary-custom">${formatPrecio(prod.precio)}</p>
+                        <p class="small mb-2 catalog-desc">${prod.descripcion}</p>
+                        <p class="small mb-3" style="color:var(--text-muted);">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <a href="seller.html?id=${prod.vendedorId}"
+                               class="text-decoration-none text-primary-custom fw-semibold">
+                                ${prod.vendedor}
+                            </a>
+                        </p>
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <button class="btn btn-outline-custom btn-sm rounded-3 w-100"
+                                    onclick="verProducto(${prod.id})">
+                                <i class="bi bi-eye me-1"></i>Ver detalle
+                            </button>
+                            ${contactBtns}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        });
+    }
+
+    /* ── Filtros dinámicos ── */
+    const filtersContainer = document.getElementById('category-filters');
+    filtersContainer.innerHTML = `
+    <button class="btn btn-primary-custom filter-btn active" data-category="todos">
+        <i class="bi bi-grid-3x3-gap me-1"></i>Todos
+    </button>`;
+    categorias.forEach(c => {
+        filtersContainer.innerHTML += `
+        <button class="btn btn-outline-custom filter-btn" data-category="${c.id}">
+            <i class="${c.icon} me-1"></i>${c.label}
+        </button>`;
+    });
+
+    renderCatalog(productos);
+
+    document.addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn || !btn.closest('#category-filters')) return;
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active', 'btn-primary-custom');
+            b.classList.add('btn-outline-custom');
+        });
+        btn.classList.remove('btn-outline-custom');
+        btn.classList.add('active', 'btn-primary-custom');
+        const cat = btn.getAttribute('data-category');
+        const si  = document.getElementById('search-input');
+        if (si) si.value = '';
+        renderCatalog(cat === 'todos' ? productos : productos.filter(p => p.cat === cat));
+    });
+
+    document.getElementById('search-input').addEventListener('input', e => {
+        const term = e.target.value.toLowerCase();
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('active', 'btn-primary-custom');
+            b.classList.add('btn-outline-custom');
+        });
+        const first = document.querySelector('.filter-btn');
+        if (first) { first.classList.remove('btn-outline-custom'); first.classList.add('active', 'btn-primary-custom'); }
+        renderCatalog(productos.filter(p => p.nombre.toLowerCase().includes(term)));
+    });
+});
+</script>
+</body>
+</html>

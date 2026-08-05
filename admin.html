@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteTam | Panel Administrador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html"><i class="bi bi-palette-fill me-2"></i>ArteTam</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle" style="width:40px;height:40px;padding:0;"><i class="bi bi-moon-fill" id="theme-icon"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="admin-hero">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div style="width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;"><i class="bi bi-speedometer2"></i></div>
+                <div>
+                    <h1 class="fw-bold mb-0" style="font-size:1.5rem;">Panel de Administración</h1>
+                    <p class="mb-0 small" id="admin-welcome" style="opacity:.8;"></p>
+                </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="index.html" class="admin-logout-btn"><i class="bi bi-eye"></i> Ver sitio</a>
+                <button id="btn-logout" class="admin-logout-btn" style="border-color:rgba(255,100,100,.5);"><i class="bi bi-box-arrow-right"></i> Salir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TABS -->
+<div style="background:var(--card-color);border-bottom:1px solid var(--border-color);position:sticky;top:62px;z-index:100;">
+    <div class="container">
+        <div style="overflow-x:auto;white-space:nowrap;">
+            <ul class="nav d-inline-flex" id="admin-tabs" style="gap:0;min-width:100%;">
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3 active" data-tab="resumen" style="border:none;background:none;border-bottom:2px solid var(--primary);color:var(--text-color);"><i class="bi bi-house me-1"></i>Resumen</button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="catalogo" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-grid me-1"></i>Catálogo</button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="usuarios" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-people me-1"></i>Usuarios</button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="solicitudes" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-person-plus me-1"></i>Solicitudes <span id="sol-badge"></span></button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="mensajes" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-chat-dots me-1"></i>Mensajes <span id="msg-badge"></span></button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="categorias" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-tags me-1"></i>Categorías</button></li>
+                <li class="nav-item"><button class="admin-tab-btn nav-link px-3 py-3" data-tab="config" style="border:none;background:none;border-bottom:2px solid transparent;color:var(--text-muted);"><i class="bi bi-gear me-1"></i>Configuración</button></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4 flex-grow-1" id="admin-body"></div>
+
+<!-- Modal: nuevo/editar usuario -->
+<div class="modal fade" id="modalUsuario" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold" id="mu-title">Nuevo vendedor</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body pt-2">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Nombre completo *</label>
+                        <input type="text" class="form-control rounded-3" id="mu-nombre">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Nombre de usuario *
+                            <small class="text-muted">(genera el correo automáticamente)</small>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control rounded-start-3" id="mu-username" placeholder="juan.perez">
+                            <span class="input-group-text" id="mu-domain-display">@artesanos.com</span>
+                        </div>
+                        <div class="form-text" id="mu-email-preview" style="color:var(--primary);font-size:.78rem;"></div>
+                    </div>
+                    <div class="col-12"><label class="form-label">Contraseña *</label><input type="text" class="form-control rounded-3" id="mu-pass" placeholder="Mín. 6 caracteres"></div>
+                    <div class="col-md-6">
+                        <label class="form-label">Teléfono (10 dígitos)</label>
+                        <input type="tel" class="form-control rounded-3" id="mu-cel" placeholder="5512345678" maxlength="10" inputmode="numeric">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Especialidad</label>
+                        <input type="text" class="form-control rounded-3" id="mu-especialidad" placeholder="Cerámica, Textiles...">
+                    </div>
+                    <div class="col-12"><label class="form-label">Ubicación</label><input type="text" class="form-control rounded-3" id="mu-ubicacion" placeholder="Ciudad, Estado"></div>
+                    <div class="col-12"><label class="form-label">Estado</label><select class="form-select rounded-3" id="mu-activo"><option value="true">Activo</option><option value="false">Suspendido</option></select></div>
+                    <!-- Estadísticas del vendedor -->
+                    <div class="col-12">
+                        <hr style="border-color:var(--border-color);">
+                        <p class="small fw-semibold mb-2" style="color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">Estadísticas del artesano</p>
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <label class="form-label small">Años exp.</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="mu-anios" min="0" max="99" value="0">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small">Ventas</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="mu-ventas" min="0" value="0">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label small">Calificación</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="mu-calificacion" min="1" max="5" step="0.1" value="5.0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="mu-alert" class="alert d-none mt-3 rounded-3"></div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-custom rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom rounded-3 px-4" id="mu-save"><i class="bi bi-check2 me-1"></i>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: nueva/editar categoría -->
+<div class="modal fade" id="modalCategoria" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold" id="mc-title">Nueva categoría</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body pt-2">
+                <div class="mb-3"><label class="form-label">Nombre</label><input type="text" class="form-control rounded-3" id="mc-label" placeholder="Ej. Alfarería"></div>
+                <div><label class="form-label">Ícono (Bootstrap Icons)</label>
+                    <input type="text" class="form-control rounded-3" id="mc-icon" placeholder="bi-tag">
+                    <div class="mt-2 small" style="color:var(--text-muted);">Vista previa: <i id="mc-icon-prev" class="bi bi-tag ms-1 fs-5"></i></div>
+                </div>
+                <div id="mc-alert" class="alert d-none mt-3 rounded-3"></div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-custom rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom rounded-3 px-4" id="mc-save"><i class="bi bi-check2 me-1"></i>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: ver mensaje de contacto -->
+<div class="modal fade" id="modalMensaje" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0"><h5 class="modal-title fw-bold">Mensaje de contacto</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body" id="modal-msg-body"></div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-custom rounded-3" data-bs-dismiss="modal">Cerrar</button>
+                <a id="msg-wa" href="#" target="_blank" class="btn btn-success rounded-3"><i class="bi bi-whatsapp me-1"></i>WhatsApp</a>
+                <a id="msg-email" href="#" class="btn btn-outline-custom rounded-3"><i class="bi bi-envelope me-1"></i>Correo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-3 mt-auto">
+    <div class="container text-center"><small style="color:rgba(255,255,255,.4);">&copy; 2026 ArteTam — Panel Administración</small></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sess = getSession();
+    if (!sess || sess.rol !== 'admin') { window.location.href = 'login.html'; return; }
+    document.getElementById('admin-welcome').textContent = `Sesión activa — ${sess.nombre}`;
+    document.getElementById('btn-logout').addEventListener('click', () => { clearSession(); window.location.href = 'login.html'; });
+
+    /* Actualizar badges del menú */
+    function updateBadges() {
+        const noLeidos = getMensajes().filter(m=>!m.leido).length;
+        const b = document.getElementById('msg-badge');
+        if (b) b.innerHTML = noLeidos ? `<span class="badge rounded-pill ms-1" style="background:#dc3545;color:#fff;font-size:.68rem;">${noLeidos}</span>` : '';
+        const solPend = getSolicitudes().filter(s=>s.estado==='pendiente').length;
+        const sb = document.getElementById('sol-badge');
+        if (sb) sb.innerHTML = solPend ? `<span class="badge rounded-pill ms-1" style="background:#e68900;color:#fff;font-size:.68rem;">${solPend}</span>` : '';
+    }
+    updateBadges();
+
+    /* Tabs */
+    const body = document.getElementById('admin-body');
+    document.getElementById('admin-tabs').addEventListener('click', e => {
+        const btn = e.target.closest('.admin-tab-btn'); if (!btn) return;
+        document.querySelectorAll('.admin-tab-btn').forEach(b => { b.style.borderBottom='2px solid transparent'; b.style.color='var(--text-muted)'; b.classList.remove('active'); });
+        btn.style.borderBottom='2px solid var(--primary)'; btn.style.color='var(--text-color)'; btn.classList.add('active');
+        ({ resumen, catalogo, usuarios, solicitudes, mensajes, categorias, config })[btn.dataset.tab]?.();
+    });
+
+    renderTab('resumen');
+    function renderTab(t) { ({ resumen, catalogo, usuarios, solicitudes, mensajes, categorias, config })[t]?.(); }
+
+    /* ─── RESUMEN ─── */
+    function resumen() {
+        const prods=getProductos(), arts=getArtesanos();
+        const agot=prods.filter(p=>getStock(p.id)===0).length;
+        const pocas=prods.filter(p=>{const s=getStock(p.id);return s>0&&s<=3;}).length;
+        const ocult=prods.filter(p=>p.visible===false).length;
+        const activos=arts.filter(a=>a.activo!==false).length;
+
+        body.innerHTML = `
+        <div class="row g-3 mb-4">
+            ${stat('bi-box-seam','rgba(139,94,60,.12)','var(--primary)',prods.length,'Productos')}
+            ${stat('bi-people','rgba(25,135,84,.1)','#198754',activos,'Artesanos / Vendedores')}
+            ${stat('bi-slash-circle','rgba(220,53,69,.1)','#dc3545',agot,'Agotados')}
+            ${stat('bi-exclamation-triangle','rgba(255,152,0,.1)','#e68900',pocas,'Pocas uds. (≤3)')}
+            ${stat('bi-eye-slash','rgba(108,117,125,.1)','#6c757d',ocult,'Ocultos')}
+        </div>
+        <div class="admin-card p-3 p-md-4 mb-4">
+            <div class="admin-section-title"><i class="bi bi-boxes text-primary-custom"></i> Control de stock
+                <button class="btn admin-save-btn ms-auto" id="save-all-stock" style="font-size:.78rem;"><i class="bi bi-floppy2 me-1"></i>Guardar todos</button>
+            </div>
+            <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Producto</th><th>Artesano</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
+                <tbody id="stock-tbody">${prods.map(p=>stockRow(p)).join('')}</tbody>
+            </table></div>
+        </div>`;
+        bindStock();
+    }
+
+    function stat(icon,bg,color,num,label){
+        return `<div class="col-6 col-sm-4 col-md-4 col-lg-2-custom">
+            <div class="admin-stat">
+                <div class="admin-stat-icon" style="background:${bg};"><i class="bi ${icon}" style="color:${color};"></i></div>
+                <div><div class="admin-stat-num">${num}</div><div class="admin-stat-label">${label}</div></div>
+            </div>
+        </div>`;
+    }
+    function stockRow(p){
+        const s=getStock(p.id);
+        return `<tr data-prod-id="${p.id}">
+            <td><div class="d-flex align-items-center gap-2"><img src="${p.img}" style="width:36px;height:36px;border-radius:7px;object-fit:cover;flex-shrink:0;"><span style="font-size:.87rem;font-weight:600;">${p.nombre}</span></div></td>
+            <td style="font-size:.83rem;">${p.vendedor}</td>
+            <td><div class="d-flex align-items-center gap-1">
+                <button class="admin-stock-btn stock-dec">−</button>
+                <input type="number" class="admin-stock-input stock-val" value="${s}" min="0">
+                <button class="admin-stock-btn stock-inc">+</button>
+            </div></td>
+            <td><span class="stock-pill ${stockPillClass(s)} stock-status">${stockPillText(s)}</span></td>
+            <td><button class="admin-save-btn stock-save" style="font-size:.75rem;"><i class="bi bi-check2 me-1"></i>Guardar</button></td>
+        </tr>`;
+    }
+    function updateStockBadge(row,v){const b=row.querySelector('.stock-status');b.className=`stock-pill ${stockPillClass(v)} stock-status`;b.innerHTML=stockPillText(v);}
+
+    function bindStock(){
+        const tb=document.getElementById('stock-tbody'); if(!tb) return;
+
+        /* Use a single delegated listener — no duplicates on re-render */
+        tb.addEventListener('click', function stockClickHandler(e){
+            const row=e.target.closest('tr[data-prod-id]'); if(!row) return;
+            const inp=row.querySelector('.stock-val');
+            const id=parseInt(row.dataset.prodId);
+
+            if(e.target.closest('.stock-dec')){
+                inp.value=Math.max(0,parseInt(inp.value||0)-1);
+                updateStockBadge(row,parseInt(inp.value));
+            }
+            if(e.target.closest('.stock-inc')){
+                inp.value=parseInt(inp.value||0)+1;
+                updateStockBadge(row,parseInt(inp.value));
+            }
+            if(e.target.closest('.stock-save')){
+                const raw = inp.value.trim();
+                const v   = parseInt(raw);
+                if(raw === '' || isNaN(v) || v < 0){
+                    inp.style.borderColor='#dc3545';
+                    inp.title='Ingresa un número válido (≥ 0)';
+                    setTimeout(()=>{ inp.style.borderColor=''; inp.title=''; }, 2000);
+                    return;
+                }
+                setStock(id, v);
+                updateStockBadge(row, v);
+                /* Actualizar también la columna visual de la tabla de catálogo */
+                const b=e.target.closest('.stock-save');
+                b.classList.add('saved'); b.innerHTML='<i class="bi bi-check-circle me-1"></i>OK';
+                setTimeout(()=>{ b.classList.remove('saved'); b.innerHTML='<i class="bi bi-check2 me-1"></i>Guardar'; }, 1800);
+            }
+        });
+
+        tb.addEventListener('input', function(e){
+            if(e.target.classList.contains('stock-val')){
+                const v=parseInt(e.target.value);
+                e.target.style.borderColor = (isNaN(v)||v<0) ? '#dc3545' : '';
+                if(!isNaN(v) && v>=0) updateStockBadge(e.target.closest('tr'), v);
+            }
+        });
+
+        /* Guardar todos — bind once using { once } equivalent pattern */
+        const sa=document.getElementById('save-all-stock'); if(!sa) return;
+        const newSa = sa.cloneNode(true); /* replace to strip old listeners */
+        sa.parentNode.replaceChild(newSa, sa);
+        newSa.addEventListener('click', ()=>{
+            let hasError = false;
+            tb.querySelectorAll('tr[data-prod-id]').forEach(r=>{
+                const inp=r.querySelector('.stock-val');
+                const v=parseInt(inp.value);
+                if(isNaN(v)||v<0){ inp.style.borderColor='#dc3545'; hasError=true; return; }
+                inp.style.borderColor='';
+                setStock(parseInt(r.dataset.prodId), v);
+                updateStockBadge(r, v);
+            });
+            if(hasError){
+                newSa.style.background='#dc3545';
+                newSa.innerHTML='<i class="bi bi-exclamation-circle me-1"></i>Corrige los valores';
+                setTimeout(()=>{ newSa.style.background=''; newSa.innerHTML='<i class="bi bi-floppy2 me-1"></i>Guardar todos'; }, 2500);
+                return;
+            }
+            newSa.classList.add('saved'); newSa.innerHTML='<i class="bi bi-check-circle me-1"></i>¡Guardado!';
+            setTimeout(()=>{ newSa.classList.remove('saved'); newSa.innerHTML='<i class="bi bi-floppy2 me-1"></i>Guardar todos'; }, 2000);
+        });
+    }
+
+    /* ─── CATÁLOGO ─── */
+    function catalogo(){
+        const prods=getProductos();
+        body.innerHTML=`<div class="admin-card p-3 p-md-4">
+            <div class="admin-section-title"><i class="bi bi-grid text-primary-custom"></i> Moderación del catálogo <span class="ms-auto small" style="color:var(--text-muted);">${prods.length} productos</span></div>
+            <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Producto</th><th>Artesano</th><th>Cat.</th><th>Stock</th><th>Visibilidad</th><th>Acciones</th></tr></thead>
+                <tbody>${prods.map(p=>{
+                    const s=getStock(p.id),oculto=p.visible===false;
+                    return `<tr data-prod-id="${p.id}">
+                        <td><div class="d-flex align-items-center gap-2"><img src="${p.img}" style="width:38px;height:38px;border-radius:7px;object-fit:cover;${oculto?'filter:grayscale(.5);':''}"><div><div style="font-size:.87rem;font-weight:600;">${p.nombre}</div><div style="font-size:.73rem;color:var(--text-muted);">${p.precio}</div></div></div></td>
+                        <td><a href="seller.html?id=${p.vendedorId}" class="text-decoration-none text-primary-custom" style="font-size:.83rem;">${p.vendedor}</a></td>
+                        <td><span class="badge rounded-pill px-2 py-1" style="background:var(--section-bg);color:var(--text-muted);font-size:.7rem;">${p.cat.toUpperCase()}</span></td>
+                        <td><span class="stock-pill ${stockPillClass(s)}">${stockPillText(s)}</span></td>
+                        <td><span class="badge rounded-pill px-2 py-1" style="background:${oculto?'rgba(108,117,125,.15)':'rgba(25,135,84,.12)'};color:${oculto?'#6c757d':'#198754'};border:1px solid ${oculto?'rgba(108,117,125,.25)':'rgba(25,135,84,.25)'};font-size:.7rem;"><i class="bi bi-eye${oculto?'-slash':''} me-1"></i>${oculto?'Oculto':'Visible'}</span></td>
+                        <td><div class="d-flex gap-1">
+                            <button class="admin-save-btn btn-tog" style="${oculto?'background:#198754;':'background:#6c757d;'}">${oculto?'Mostrar':'Ocultar'}</button>
+                            <button class="admin-save-btn btn-del" style="background:#dc3545;"><i class="bi bi-trash"></i></button>
+                        </div></td>
+                    </tr>`;}).join('')}
+                </tbody>
+            </table></div>
+        </div>`;
+        body.querySelector('tbody').addEventListener('click',e=>{
+            const row=e.target.closest('tr'); if(!row) return;
+            const id=parseInt(row.dataset.prodId);
+            if(e.target.closest('.btn-tog')){const p=getProducto(id);updateProducto(id,{visible:!p.visible});catalogo();}
+            if(e.target.closest('.btn-del')){if(!confirm('¿Eliminar este producto?'))return;deleteProducto(id);catalogo();}
+        });
+    }
+
+    /* ─── USUARIOS ─── */
+    let _editEmail=null;
+    function usuarios(){
+        const list=getUsuarios();
+        body.innerHTML=`<div class="admin-card p-3 p-md-4">
+            <div class="admin-section-title"><i class="bi bi-people text-primary-custom"></i> Gestión de usuarios
+                <button class="btn admin-save-btn ms-auto" id="btn-new-user"><i class="bi bi-plus-lg me-1"></i>Nuevo vendedor</button>
+            </div>
+            <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Usuario</th><th>Rol</th><th>ID Artesano</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody>${list.map(u=>`<tr data-email="${u.email}">
+                    <td><div class="admin-artesano-row">
+                        ${u.vendedorId?`<img src="${getArtesano(u.vendedorId)?.avatar||''}" alt="">`:
+                          `<div style="width:38px;height:38px;border-radius:50%;background:var(--section-bg);display:flex;align-items:center;justify-content:center;"><i class="bi bi-person" style="color:var(--text-muted);"></i></div>`}
+                        <div><div style="font-size:.87rem;font-weight:600;">${u.nombre}</div><div style="font-size:.73rem;color:var(--text-muted);">${u.email}</div></div>
+                    </div></td>
+                    <td><span class="badge rounded-pill px-2 py-1" style="background:${u.rol==='admin'?'rgba(139,94,60,.15)':'rgba(25,135,84,.1)'};color:${u.rol==='admin'?'var(--primary)':'#198754'};font-size:.7rem;">${u.rol.toUpperCase()}</span></td>
+                    <td style="font-size:.82rem;color:var(--text-muted);">${u.vendedorId||'—'}</td>
+                    <td><span class="badge rounded-pill px-2 py-1" style="background:${u.activo!==false?'rgba(25,135,84,.12)':'rgba(220,53,69,.1)'};color:${u.activo!==false?'#198754':'#dc3545'};font-size:.7rem;">${u.activo!==false?'Activo':'Suspendido'}</span></td>
+                    <td>${u.rol!=='admin'?`<div class="d-flex gap-1 flex-wrap">
+                        <button class="admin-save-btn btn-edit-u" style="font-size:.75rem;"><i class="bi bi-pencil me-1"></i>Editar</button>
+                        <button class="admin-save-btn btn-tog-u" style="background:${u.activo!==false?'#e68900':'#198754'};font-size:.75rem;">${u.activo!==false?'Suspender':'Activar'}</button>
+                        <button class="admin-save-btn btn-del-u" style="background:#dc3545;font-size:.75rem;"><i class="bi bi-trash"></i></button>
+                    </div>`:'<span style="font-size:.8rem;color:var(--text-muted);">—</span>'}</td>
+                </tr>`).join('')}</tbody>
+            </table></div>
+        </div>`;
+        document.getElementById('btn-new-user').addEventListener('click',()=>{
+            _editEmail=null;
+            document.getElementById('mu-title').textContent='Nuevo vendedor';
+            ['mu-nombre','mu-username','mu-pass','mu-cel','mu-especialidad','mu-ubicacion'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('mu-anios').value='0';
+            document.getElementById('mu-ventas').value='0';
+            document.getElementById('mu-calificacion').value='5.0';
+            document.getElementById('mu-email-preview').textContent='';
+            document.getElementById('mu-domain-display').textContent='@artesanos.com';
+            document.getElementById('mu-activo').value='true';
+            document.getElementById('mu-alert').className='alert d-none';
+            new bootstrap.Modal(document.getElementById('modalUsuario')).show();
+        });
+        /* Digits-only in mu-cel after render */
+        if (document.getElementById('mu-cel')) {
+            document.getElementById('mu-cel').addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g,'').slice(0,10);
+            });
+        }
+        if (document.getElementById('mu-username')) {
+            document.getElementById('mu-username').addEventListener('input', function() {
+                const un = this.value.trim();
+                const preview = document.getElementById('mu-email-preview');
+                if (preview) preview.textContent = un ? 'Correo: ' + vendorEmail(un) : '';
+            });
+        }
+        body.querySelector('tbody').addEventListener('click',e=>{
+            const row=e.target.closest('tr'); if(!row) return;
+            const email=row.dataset.email, list=getUsuarios(), u=list.find(x=>x.email===email); if(!u) return;
+            if(e.target.closest('.btn-edit-u')){
+                _editEmail=email;
+                document.getElementById('mu-title').textContent='Editar usuario';
+                document.getElementById('mu-nombre').value=u.nombre;
+                /* Show username from email (strip domain) */
+                const uname = u.email.split('@')[0];
+                document.getElementById('mu-username').value=uname;
+                document.getElementById('mu-email-preview').textContent='Correo actual: '+u.email;
+                document.getElementById('mu-domain-display').textContent='@'+u.email.split('@')[1];
+                document.getElementById('mu-pass').value='';
+                /* phone from artesano */
+                const art = u.vendedorId ? getArtesano(u.vendedorId) : null;
+                const celD = art&&art.cel ? String(art.cel).replace(/\D/g,'').slice(-10) : '';
+                document.getElementById('mu-cel').value=celD;
+                document.getElementById('mu-especialidad').value=art?art.especialidad:'';
+                document.getElementById('mu-ubicacion').value=art?art.ubicacion:'';
+                document.getElementById('mu-anios').value=art?(art.anios||0):0;
+                document.getElementById('mu-ventas').value=art?(art.ventas||0):0;
+                document.getElementById('mu-calificacion').value=art?(art.calificacion||5.0):5.0;
+                document.getElementById('mu-activo').value=String(u.activo!==false);
+                document.getElementById('mu-alert').className='alert d-none';
+                new bootstrap.Modal(document.getElementById('modalUsuario')).show();
+            }
+            if(e.target.closest('.btn-tog-u')){const i=list.findIndex(x=>x.email===email);list[i].activo=!list[i].activo;saveUsuarios(list);usuarios();}
+            if(e.target.closest('.btn-del-u')){if(!confirm(`¿Eliminar a ${u.nombre}?`))return;saveUsuarios(list.filter(x=>x.email!==email));usuarios();}
+        });
+    }
+    /* Digits-only for phone field */
+    document.getElementById('mu-cel').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g,'').slice(0,10);
+    });
+    /* Live email preview */
+    document.getElementById('mu-username').addEventListener('input', function() {
+        const un = this.value.trim();
+        const preview = document.getElementById('mu-email-preview');
+        preview.textContent = un ? 'Correo: ' + vendorEmail(un) : '';
+    });
+
+    document.getElementById('mu-save').addEventListener('click',()=>{
+        const nombre    = document.getElementById('mu-nombre').value.trim();
+        const username  = document.getElementById('mu-username').value.trim();
+        const pass      = document.getElementById('mu-pass').value.trim();
+        const celRaw    = document.getElementById('mu-cel').value.replace(/\D/g,'');
+        const especialidad = document.getElementById('mu-especialidad').value.trim();
+        const ubicacion = document.getElementById('mu-ubicacion').value.trim();
+        const activo    = document.getElementById('mu-activo').value === 'true';
+        const alertEl   = document.getElementById('mu-alert');
+
+        if (!nombre || !username || !pass) {
+            alertEl.className='alert alert-warning d-block rounded-3';
+            alertEl.textContent='Nombre, usuario y contraseña son obligatorios.';return;
+        }
+        if (pass.length < 6) {
+            alertEl.className='alert alert-warning d-block rounded-3';
+            alertEl.textContent='La contraseña debe tener al menos 6 caracteres.';return;
+        }
+        if (celRaw && celRaw.length !== 10) {
+            alertEl.className='alert alert-warning d-block rounded-3';
+            alertEl.textContent='El teléfono debe tener exactamente 10 dígitos.';
+            document.getElementById('mu-cel').focus(); return;
+        }
+
+        if (_editEmail) {
+            /* Edit: update name, password, cel, status */
+            const list = getUsuarios();
+            const i = list.findIndex(u => u.email === _editEmail);
+            if (i !== -1) {
+                list[i].nombre = nombre;
+                list[i].password = _hashPwd(pass);
+                list[i].activo   = activo;
+                saveUsuarios(list);
+                /* Sync artesano */
+                if (list[i].vendedorId) {
+                    const updates = { nombre };
+                    if (celRaw) updates.cel = waNumber(celRaw);
+                    if (especialidad) updates.especialidad = especialidad;
+                    if (ubicacion) updates.ubicacion = ubicacion;
+                    updates.anios        = Math.max(0, parseInt(document.getElementById('mu-anios').value)||0);
+                    updates.ventas       = Math.max(0, parseInt(document.getElementById('mu-ventas').value)||0);
+                    updates.calificacion = Math.min(5, Math.max(1, parseFloat(document.getElementById('mu-calificacion').value)||5.0));
+                    updateArtesano(list[i].vendedorId, updates);
+                }
+            }
+            alertEl.className='alert alert-success d-block rounded-3';
+            alertEl.innerHTML='<i class="bi bi-check-circle me-1"></i>Usuario actualizado correctamente.';
+            setTimeout(()=>{ bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide(); usuarios(); }, 1500);
+        } else {
+            const result = createVendorUser({ username, password:pass, nombre,
+                cel: celRaw, especialidad, ubicacion, activo });
+            if (!result.ok) {
+                alertEl.className='alert alert-danger d-block rounded-3';
+                alertEl.textContent=result.error; return;
+            }
+            alertEl.className='alert alert-success d-block rounded-3';
+            alertEl.innerHTML=`<i class="bi bi-check-circle me-1"></i>Cuenta creada.<br>
+                Correo: <strong>${result.email}</strong> · Contraseña: <strong>${pass}</strong>`;
+            setTimeout(()=>{ bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide(); usuarios(); }, 2000);
+        }
+    });
+
+    /* ─── SOLICITUDES ─── */
+    function solicitudes(){
+        const list=getSolicitudes();
+        updateBadges();
+        body.innerHTML=`<div class="admin-card p-3 p-md-4">
+            <div class="admin-section-title"><i class="bi bi-person-plus text-primary-custom"></i> Solicitudes de registro <span class="ms-auto small" style="color:var(--text-muted);">${list.length} total</span></div>
+            ${!list.length?`<p class="text-center py-5" style="color:var(--text-muted);">No hay solicitudes pendientes.</p>`:`
+            <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Nombre</th><th>Correo</th><th>Especialidad</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+                <tbody>${list.map(s=>{
+                    const fecha=new Date(s.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+                    const color=s.estado==='aprobada'?'#198754':s.estado==='rechazada'?'#dc3545':'#e68900';
+                    return `<tr data-sol-id="${s.id}">
+                        <td><div style="font-size:.87rem;font-weight:600;">${s.nombre}</div><div style="font-size:.73rem;color:var(--text-muted);">${s.tel}</div></td>
+                        <td style="font-size:.83rem;">${s.email}</td>
+                        <td style="font-size:.83rem;">${s.especialidad}</td>
+                        <td><span class="badge rounded-pill px-2 py-1" style="background:${color}22;color:${color};border:1px solid ${color}44;font-size:.7rem;">${s.estado.charAt(0).toUpperCase()+s.estado.slice(1)}</span></td>
+                        <td style="font-size:.8rem;color:var(--text-muted);">${fecha}</td>
+                        <td><div class="d-flex gap-1 flex-wrap">
+                            <button class="admin-save-btn btn-sol-det" style="font-size:.73rem;"><i class="bi bi-eye me-1"></i>Ver</button>
+                            ${s.estado==='pendiente'?`
+                            <button class="admin-save-btn btn-sol-apr" style="background:#198754;font-size:.73rem;"><i class="bi bi-check2 me-1"></i>Aprobar</button>
+                            <button class="admin-save-btn btn-sol-rec" style="background:#dc3545;font-size:.73rem;"><i class="bi bi-x me-1"></i>Rechazar</button>`:''}
+                            <button class="admin-save-btn btn-sol-del" style="background:#6c757d;font-size:.73rem;"><i class="bi bi-trash"></i></button>
+                        </div></td>
+                    </tr>`;}).join('')}
+                </tbody>
+            </table></div>`}
+        </div>`;
+        body.querySelector('tbody')?.addEventListener('click',e=>{
+            const row=e.target.closest('tr'); if(!row) return;
+            const id=parseInt(row.dataset.solId), s=getSolicitudes().find(x=>x.id===id); if(!s) return;
+            if(e.target.closest('.btn-sol-det')){
+                /* Mostrar detalle en modal reutilizado */
+                document.getElementById('modal-msg-body').innerHTML=`
+                    <div class="p-3 rounded-3 mb-3" style="background:var(--section-bg);">
+                        <h6 class="fw-bold mb-1">${s.nombre}</h6>
+                        <div class="small" style="color:var(--text-muted);"><i class="bi bi-envelope me-1"></i>${s.email}</div>
+                        <div class="small" style="color:var(--text-muted);"><i class="bi bi-telephone me-1"></i>${s.tel}</div>
+                        <div class="small" style="color:var(--text-muted);"><i class="bi bi-geo-alt me-1"></i>${s.ubicacion||'No especificado'}</div>
+                        <div class="small" style="color:var(--text-muted);"><i class="bi bi-tag me-1"></i>${s.especialidad}</div>
+                    </div>
+                    <p class="small" style="line-height:1.7;"><strong>Sobre su trabajo:</strong><br>${s.bio}</p>`;
+                document.getElementById('msg-wa').href=`https://wa.me/?text=${encodeURIComponent('Hola '+s.nombre+', gracias por tu solicitud en ArteTam.')}`;
+                document.getElementById('msg-email').href=`mailto:${s.email}?subject=Tu%20solicitud%20en%20ArteTam`;
+                new bootstrap.Modal(document.getElementById('modalMensaje')).show();
+            }
+            if(e.target.closest('.btn-sol-apr')){
+                /* Crear cuenta de usuario */
+                const usuarios = getUsuarios();
+                if (!usuarios.find(u => u.email === s.email)) {
+                    /* Generar vendedorId limpio desde el nombre */
+                    const vid = s.nombre.toLowerCase()
+                        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+                        .replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+                    const passGen = s.nombre.split(' ')[0].toLowerCase() + Math.floor(1000+Math.random()*9000);
+                    usuarios.push({
+                        email: s.email,
+                        password: passGen,
+                        nombre: s.nombre,
+                        rol: 'vendedor',
+                        vendedorId: vid,
+                        activo: true
+                    });
+                    saveUsuarios(usuarios);
+                    /* Crear perfil de artesano si no existe */
+                    const arts = getArtesanos();
+                    if (!arts.find(a => a.id === vid)) {
+                        arts.push({
+                            id: vid,
+                            nombre: s.nombre,
+                            especialidad: s.especialidad || 'Artesanías',
+                            ubicacion: s.ubicacion || 'México',
+                            bio: s.bio || '',
+                            cel: s.tel || '',
+                            email: s.email,
+                            avatar: `https://i.pravatar.cc/150?u=${encodeURIComponent(s.email)}`,
+                            calificacion: 5.0,
+                            ventas: 0,
+                            anios: 0,
+                            activo: true
+                        });
+                        saveArtesanos(arts);
+                    }
+                    alert(`✅ Solicitud aprobada.\n\nCuenta creada:\nCorreo: ${s.email}\nContraseña temporal: ${passGen}\n\nEl vendedor puede iniciar sesión con su correo registrado.`);
+                } else {
+                    alert('Este correo ya tiene una cuenta. Se marcará la solicitud como aprobada.');
+                }
+                updateSolicitud(id,{estado:'aprobada'});
+                solicitudes();
+            }
+            if(e.target.closest('.btn-sol-rec')){updateSolicitud(id,{estado:'rechazada'});solicitudes();}
+            if(e.target.closest('.btn-sol-del')){if(!confirm('¿Eliminar esta solicitud?'))return;saveSolicitudes(getSolicitudes().filter(x=>x.id!==id));solicitudes();}
+        });
+    }
+
+    /* ─── MENSAJES DE CONTACTO ─── */
+    function mensajes(){
+        const list=getMensajes();
+        updateBadges();
+        body.innerHTML=`<div class="admin-card p-3 p-md-4">
+            <div class="admin-section-title"><i class="bi bi-chat-dots text-primary-custom"></i> Mensajes del formulario de contacto
+                <span class="ms-auto small" style="color:var(--text-muted);">${list.length} mensajes · ${list.filter(m=>!m.leido).length} sin leer</span>
+            </div>
+            ${!list.length?`<p class="text-center py-5" style="color:var(--text-muted);">No hay mensajes aún.</p>`:`
+            <div class="table-responsive"><table class="admin-table">
+                <thead><tr><th>Remitente</th><th>Asunto</th><th>Mensaje</th><th>Fecha</th><th>Acciones</th></tr></thead>
+                <tbody>${list.map(m=>{
+                    const fecha=new Date(m.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+                    return `<tr data-msg-id="${m.id}" class="${m.leido?'':'fw-semibold'}">
+                        <td><div style="font-size:.87rem;">${m.nombre}</div><div style="font-size:.73rem;color:var(--text-muted);">${m.email}</div></td>
+                        <td style="font-size:.82rem;">${m.asunto||'general'}</td>
+                        <td style="font-size:.82rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.mensaje}</td>
+                        <td style="font-size:.78rem;color:var(--text-muted);">${fecha}</td>
+                        <td><div class="d-flex gap-1">
+                            ${!m.leido?`<div style="width:8px;height:8px;border-radius:50%;background:var(--primary);margin-top:6px;flex-shrink:0;"></div>`:''}
+                            <button class="admin-save-btn btn-msg-ver" style="font-size:.73rem;"><i class="bi bi-eye me-1"></i>Ver</button>
+                            <button class="admin-save-btn btn-msg-del" style="background:#dc3545;font-size:.73rem;"><i class="bi bi-trash"></i></button>
+                        </div></td>
+                    </tr>`;}).join('')}
+                </tbody>
+            </table></div>`}
+        </div>`;
+        body.querySelector('tbody')?.addEventListener('click',e=>{
+            const row=e.target.closest('tr'); if(!row) return;
+            const id=parseInt(row.dataset.msgId), m=getMensajes().find(x=>x.id===id); if(!m) return;
+            if(e.target.closest('.btn-msg-ver')){
+                marcarMensajeLeido(id);
+                const fecha=new Date(m.fecha).toLocaleString('es-MX',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+                document.getElementById('modal-msg-body').innerHTML=`
+                    <div class="p-3 rounded-3 mb-3" style="background:var(--section-bg);">
+                        <div class="d-flex justify-content-between flex-wrap gap-1 mb-1"><strong>${m.nombre}</strong><span class="small" style="color:var(--text-muted);">${fecha}</span></div>
+                        <div class="small" style="color:var(--text-muted);"><i class="bi bi-envelope me-1"></i>${m.email}</div>
+                        ${m.tel?`<div class="small" style="color:var(--text-muted);"><i class="bi bi-telephone me-1"></i>${m.tel}</div>`:''}
+                        <div class="small mt-1"><strong>Asunto:</strong> ${m.asunto||'general'}</div>
+                    </div>
+                    <p style="font-size:.97rem;line-height:1.7;">${m.mensaje}</p>`;
+                document.getElementById('msg-wa').href = m.tel
+                    ? `https://wa.me/${m.tel.replace(/\D/g,'')}?text=${encodeURIComponent('Hola '+m.nombre+', gracias por contactarnos en ArteTam.')}`
+                    : '#';
+                document.getElementById('msg-wa').style.display = m.tel ? '' : 'none';
+                document.getElementById('msg-email').href=`mailto:${m.email}?subject=Re:%20Tu%20mensaje%20en%20ArteTam`;
+                new bootstrap.Modal(document.getElementById('modalMensaje')).show();
+                row.classList.remove('fw-semibold');
+                updateBadges();
+            }
+            if(e.target.closest('.btn-msg-del')){if(!confirm('¿Eliminar este mensaje?'))return;deleteMensaje(id);mensajes();}
+        });
+    }
+
+    /* ─── CATEGORÍAS ─── */
+    let _editCatId=null;
+    function categorias(){
+        const cats=getCategorias();
+        body.innerHTML=`<div class="admin-card p-3 p-md-4">
+            <div class="admin-section-title"><i class="bi bi-tags text-primary-custom"></i> Categorías
+                <button class="btn admin-save-btn ms-auto" id="btn-new-cat"><i class="bi bi-plus-lg me-1"></i>Nueva categoría</button>
+            </div>
+            <div class="row g-3" id="cat-grid">
+                ${cats.map(c=>`<div class="col-sm-6 col-md-4" data-cat-id="${c.id}">
+                    <div class="admin-card p-3 d-flex align-items-center gap-3">
+                        <div style="width:44px;height:44px;border-radius:12px;background:rgba(139,94,60,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi ${c.icon} text-primary-custom fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1"><div class="fw-semibold">${c.label}</div><div class="small" style="color:var(--text-muted);">${c.id}</div></div>
+                        <div class="d-flex gap-1">
+                            <button class="admin-save-btn btn-edit-cat" style="padding:.3rem .6rem;"><i class="bi bi-pencil"></i></button>
+                            <button class="admin-save-btn btn-del-cat" style="background:#dc3545;padding:.3rem .6rem;"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`).join('')}
+            </div>
+        </div>`;
+        document.getElementById('btn-new-cat').addEventListener('click',()=>{
+            _editCatId=null;
+            document.getElementById('mc-title').textContent='Nueva categoría';
+            document.getElementById('mc-label').value='';
+            document.getElementById('mc-icon').value='bi-tag';
+            document.getElementById('mc-icon-prev').className='bi bi-tag ms-1 fs-5';
+            document.getElementById('mc-alert').className='alert d-none';
+            new bootstrap.Modal(document.getElementById('modalCategoria')).show();
+        });
+        document.getElementById('cat-grid').addEventListener('click',e=>{
+            const card=e.target.closest('[data-cat-id]'); if(!card) return;
+            const id=card.dataset.catId, cat=getCategorias().find(c=>c.id===id); if(!cat) return;
+            if(e.target.closest('.btn-edit-cat')){
+                _editCatId=id;
+                document.getElementById('mc-title').textContent='Editar categoría';
+                document.getElementById('mc-label').value=cat.label;
+                const rawIcon=cat.icon.replace('bi ','');
+                document.getElementById('mc-icon').value=rawIcon;
+                document.getElementById('mc-icon-prev').className=`bi ${rawIcon} ms-1 fs-5`;
+                document.getElementById('mc-alert').className='alert d-none';
+                new bootstrap.Modal(document.getElementById('modalCategoria')).show();
+            }
+            if(e.target.closest('.btn-del-cat')){if(!confirm(`¿Eliminar "${cat.label}"?`))return;deleteCategoria(id);categorias();}
+        });
+    }
+    document.getElementById('mc-icon').addEventListener('input',function(){
+        const v=this.value.startsWith('bi-')?`bi ${this.value}`:this.value;
+        document.getElementById('mc-icon-prev').className=`${v} ms-1 fs-5`;
+    });
+    document.getElementById('mc-save').addEventListener('click',()=>{
+        const label=document.getElementById('mc-label').value.trim();
+        const rawIcon=document.getElementById('mc-icon').value.trim()||'bi-tag';
+        const icon=rawIcon.startsWith('bi-')?`bi ${rawIcon}`:rawIcon;
+        const alertEl=document.getElementById('mc-alert');
+        if(!label){alertEl.className='alert alert-warning d-block rounded-3';alertEl.textContent='El nombre es obligatorio.';return;}
+        if(_editCatId){updateCategoria(_editCatId,{label,icon});}
+        else{const r=addCategoria({label,icon});if(!r){alertEl.className='alert alert-danger d-block rounded-3';alertEl.textContent='Ya existe una categoría con ese nombre.';return;}}
+        bootstrap.Modal.getInstance(document.getElementById('modalCategoria')).hide();
+        categorias();
+    });
+
+    /* ─── CONFIGURACIÓN ─── */
+    function config(){
+        const cfg=getConfig();
+        body.innerHTML=`<div class="row g-4">
+            <div class="col-lg-7">
+                <div class="admin-card p-3 p-md-4 mb-4">
+                    <div class="admin-section-title"><i class="bi bi-image text-primary-custom"></i> Banner principal</div>
+                    <div class="row g-3">
+                        <div class="col-12"><label class="form-label">Título</label><input type="text" class="form-control rounded-3" id="cfg-titulo" value="${cfg.bannerTitulo}"></div>
+                        <div class="col-12"><label class="form-label">Subtítulo</label><textarea class="form-control rounded-3" id="cfg-sub" rows="3">${cfg.bannerSubtitulo}</textarea></div>
+                        <div class="col-12"><label class="form-label">URL de imagen</label>
+                            <input type="url" class="form-control rounded-3" id="cfg-img" value="${cfg.bannerImg}">
+                            <img src="${cfg.bannerImg}" id="cfg-img-prev" class="mt-2 rounded-3 w-100" style="max-height:160px;object-fit:cover;" onerror="this.style.display='none'">
+                        </div>
+                        <div class="col-12 text-end"><button class="btn btn-primary-custom rounded-3 px-4" id="cfg-save-banner"><i class="bi bi-check2 me-2"></i>Guardar banner</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="admin-card p-3 p-md-4">
+                    <div class="admin-section-title"><i class="bi bi-megaphone text-primary-custom"></i> Anuncio destacado</div>
+                    <div class="mb-3"><label class="form-label">Texto del anuncio</label>
+                        <textarea class="form-control rounded-3" id="cfg-anuncio" rows="3" placeholder="Ej. ¡Feria artesanal este sábado!">${cfg.anuncio||''}</textarea></div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="cfg-anuncio-activo" ${cfg.anuncioActivo?'checked':''}>
+                        <label class="form-check-label" for="cfg-anuncio-activo">Mostrar en página principal</label>
+                    </div>
+                    <button class="btn btn-primary-custom rounded-3 w-100" id="cfg-save-anuncio"><i class="bi bi-check2 me-2"></i>Guardar anuncio</button>
+                    <div id="cfg-alert" class="alert d-none mt-3 rounded-3"></div>
+                </div>
+            </div>
+        </div>`;
+        document.getElementById('cfg-img').addEventListener('input',function(){const p=document.getElementById('cfg-img-prev');p.src=this.value;p.style.display='';});
+        document.getElementById('cfg-save-banner').addEventListener('click',()=>{
+            saveConfig({bannerTitulo:document.getElementById('cfg-titulo').value.trim(),bannerSubtitulo:document.getElementById('cfg-sub').value.trim(),bannerImg:document.getElementById('cfg-img').value.trim()});
+            flash('cfg-alert','Banner actualizado.','success');
+        });
+        document.getElementById('cfg-save-anuncio').addEventListener('click',()=>{
+            saveConfig({anuncio:document.getElementById('cfg-anuncio').value.trim(),anuncioActivo:document.getElementById('cfg-anuncio-activo').checked});
+            flash('cfg-alert','Anuncio actualizado.','success');
+        });
+    }
+
+    function flash(id,msg,type){const el=document.getElementById(id);if(!el)return;el.className=`alert alert-${type} d-block rounded-3`;el.textContent=msg;setTimeout(()=>el.className='alert d-none',3000);}
+});
+</script>
+</body>
+</html>

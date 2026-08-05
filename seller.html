@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteTam | Perfil de Artesano</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Vista previa de producto */
+        .prod-detail-img-main { width:100%; height:320px; object-fit:cover; border-radius:14px; cursor:zoom-in; }
+        .prod-detail-thumb    { width:70px; height:70px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid transparent; transition:border-color .2s; }
+        .prod-detail-thumb.active { border-color:var(--primary); }
+        .prod-detail-thumb:hover  { border-color:var(--primary); }
+        .caracteristica-tag { display:inline-flex; align-items:center; gap:.35rem; background:var(--section-bg); border:1px solid var(--border-color); border-radius:8px; padding:.3rem .7rem; font-size:.8rem; color:var(--text-color); }
+        /* Stock badge en tarjeta */
+        .stock-badge-card { position:absolute; top:.5rem; right:.5rem; font-size:.68rem; font-weight:700; padding:.2rem .55rem; border-radius:999px; color:#fff; }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html"><i class="bi bi-palette-fill me-2"></i>ArteTam</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle" style="width:40px;height:40px;padding:0;"><i class="bi bi-moon-fill" id="theme-icon"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="bg-section py-2 border-bottom" style="border-color:var(--border-color)!important;">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="index.html" class="text-primary-custom text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="index.html#artesanos" class="text-primary-custom text-decoration-none">Artesanos</a></li>
+                <li class="breadcrumb-item active" id="breadcrumb-name" style="color:var(--text-muted);">Perfil</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div id="seller-content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height:60vh;">
+        <div class="text-center"><div class="spinner-border text-primary-custom mb-3"></div><p style="color:var(--text-muted);">Cargando perfil...</p></div>
+    </div>
+</div>
+
+<!-- ======================= MODALES ======================= -->
+
+<!-- Modal: Vista previa de producto -->
+<div class="modal fade" id="modalProductoView" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="pv-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <img id="pv-main-img" src="" alt="" class="prod-detail-img-main mb-2">
+                        <div class="d-flex flex-wrap gap-2" id="pv-thumbs"></div>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column">
+                        <span id="pv-badge" class="badge rounded-pill mb-2 align-self-start" style="background:var(--section-bg);color:var(--primary);border:1px solid var(--border-color);font-size:.75rem;"></span>
+                        <h4 class="fw-bold mb-1" id="pv-nombre"></h4>
+                        <p class="fw-bold text-primary-custom fs-5 mb-1" id="pv-precio"></p>
+                        <div class="mb-3" id="pv-stock-badge"></div>
+                        <p class="mb-3" id="pv-descripcion" style="color:var(--text-muted);line-height:1.7;"></p>
+                        <div class="mb-3" id="pv-caracteristicas"></div>
+                        <div class="mt-auto d-flex flex-column gap-2" id="pv-botones"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Agregar/Editar producto -->
+<div class="modal fade" id="modalProducto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="modalProductoTitle">Agregar producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <input type="hidden" id="mp-id">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Nombre *</label>
+                        <input type="text" class="form-control rounded-3" id="mp-nombre" placeholder="Ej. Alebrije de madera">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Categoría *</label>
+                        <select class="form-select rounded-3" id="mp-cat"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Precio *</label>
+                        <input type="text" class="form-control rounded-3" id="mp-precio" placeholder="Ej. $350 MXN">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Stock</label>
+                        <input type="number" class="form-control rounded-3" id="mp-stock" min="0" value="1">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Disponibilidad</label>
+                        <select class="form-select rounded-3" id="mp-visible">
+                            <option value="true">Visible</option>
+                            <option value="false">Oculto</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">URL imagen principal *</label>
+                        <input type="url" class="form-control rounded-3" id="mp-img" placeholder="https://...">
+                        <div class="mt-1" id="mp-img-preview"></div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Imágenes adicionales de galería</label>
+                        <div class="small mb-1" style="color:var(--text-muted);">Una URL por línea (máx. 5)</div>
+                        <textarea class="form-control rounded-3" id="mp-galeria" rows="3" placeholder="https://imagen1.jpg&#10;https://imagen2.jpg"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Características del producto</label>
+                        <div class="small mb-1" style="color:var(--text-muted);">Una por línea. Ej: Material: Barro rojo</div>
+                        <textarea class="form-control rounded-3" id="mp-caract" rows="3" placeholder="Material: Arcilla&#10;Técnica: Torno&#10;Dimensiones: 10cm"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Descripción *</label>
+                        <textarea class="form-control rounded-3" id="mp-desc" rows="3" placeholder="Describe materiales, técnica, dimensiones..."></textarea>
+                    </div>
+                </div>
+                <div id="mp-alert" class="alert d-none mt-3 rounded-3"></div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-custom rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom rounded-3 px-4" id="mp-save"><i class="bi bi-check2 me-2"></i>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Editar perfil -->
+<div class="modal fade" id="modalPerfil" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="background:var(--card-color);border:1px solid var(--border-color);border-radius:18px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Editar mi perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="row g-3">
+                    <div class="col-12"><label class="form-label">Nombre completo</label><input type="text" class="form-control rounded-3" id="ep-nombre"></div>
+                    <div class="col-12"><label class="form-label">Especialidad</label><input type="text" class="form-control rounded-3" id="ep-especialidad"></div>
+                    <div class="col-12"><label class="form-label">Ubicación</label><input type="text" class="form-control rounded-3" id="ep-ubicacion"></div>
+                    <div class="col-md-6"><label class="form-label">Teléfono / WhatsApp</label><input type="text" class="form-control rounded-3" id="ep-cel"></div>
+                    <div class="col-md-6"><label class="form-label">Correo</label><input type="email" class="form-control rounded-3" id="ep-email"></div>
+                    <div class="col-12">
+                        <label class="form-label">Foto de perfil</label>
+                        <div class="d-flex align-items-center gap-3 mb-1">
+                            <img id="ep-avatar-preview" src="" alt="Foto"
+                                 style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid var(--primary);flex-shrink:0;background:var(--section-bg);"
+                                 onerror="this.src=DEFAULT_AVATAR">
+                            <div class="flex-grow-1">
+                                <input type="file" class="form-control rounded-3" id="ep-avatar-file"
+                                       accept="image/jpeg,image/png,image/webp,image/gif">
+                                <div class="form-text" style="font-size:.72rem;color:var(--text-muted);">
+                                    JPG, PNG o WebP · máx. 2 MB · La imagen se guarda en este dispositivo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12"><label class="form-label">Biografía</label><textarea class="form-control rounded-3" id="ep-bio" rows="3"></textarea></div>
+                    <!-- Estadísticas editables (solo visibles al vendedor) -->
+                    <div class="col-12" id="ep-stats-section">
+                        <hr style="border-color:var(--border-color);">
+                        <p class="small fw-semibold mb-2" style="color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">Estadísticas de tu perfil</p>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="form-label small">Años de experiencia</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="ep-anios" min="0" max="99">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small">Ventas realizadas</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="ep-ventas" min="0">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small">Calificación (1-5)</label>
+                                <input type="number" class="form-control form-control-sm rounded-3" id="ep-calificacion" min="1" max="5" step="0.1">
+                            </div>
+                            <div class="col-6 d-flex align-items-end">
+                                <div class="form-text" style="font-size:.7rem;color:var(--text-muted);">
+                                    Los productos se cuentan automáticamente.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ep-alert" class="alert d-none mt-3 rounded-3"></div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-custom rounded-3" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom rounded-3 px-4" id="ep-save"><i class="bi bi-check2 me-2"></i>Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center"><small style="color:rgba(255,255,255,.5);">&copy; 2026 ArteTam. Todos los derechos reservados.</small></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const params     = new URLSearchParams(window.location.search);
+    const sellerId   = params.get('id');
+    const contentEl  = document.getElementById('seller-content');
+    const sess       = getSession();
+    const esMiPerfil = sess && sess.rol === 'vendedor' && sess.vendedorId === sellerId;
+    const esAdmin    = sess && sess.rol === 'admin';
+
+    let artesano = getArtesano(sellerId);
+    if (!artesano) {
+        contentEl.innerHTML = `<div class="container py-5 text-center">
+            <i class="bi bi-person-x display-1 text-primary-custom mb-3 d-block"></i>
+            <h2 class="fw-bold mb-3">Artesano no encontrado</h2>
+            <a href="index.html" class="btn btn-primary-custom mt-3 px-4"><i class="bi bi-arrow-left me-2"></i>Volver</a></div>`;
+        return;
+    }
+    document.title = `ArteTam | ${artesano.nombre}`;
+    document.getElementById('breadcrumb-name').textContent = artesano.nombre;
+
+    /* ---- helpers ---- */
+    function stars(r) {
+        return [1,2,3,4,5].map(i=>`<i class="bi bi-star${i<=Math.floor(r)?'-fill':i-r<1?'-half':''} text-warning"></i>`).join('');
+    }
+    function pillBadge(s) {
+        const [bg,txt] = s===0?['#dc3545','<i class="bi bi-x-circle me-1"></i>SOLD OUT']:
+                          s<=3?['#ff9800',`<i class="bi bi-fire me-1"></i>Últimas ${s}`]:
+                               ['rgba(25,135,84,.9)',`<i class="bi bi-check-circle me-1"></i>${s} disponibles`];
+        return `<span class="stock-badge-card" style="background:${bg};">${txt}</span>`;
+    }
+
+    /* ---- Vista previa de producto (modal) ---- */
+    window.verProducto = function(id) {
+        const p = getProducto(id); if (!p) return;
+        const s = getStock(p.id);
+        const agotado = s === 0;
+        const todas = [p.img, ...(p.galeria||[])].filter(Boolean);
+
+        document.getElementById('pv-title').textContent = p.nombre;
+        document.getElementById('pv-nombre').textContent = p.nombre;
+        document.getElementById('pv-precio').textContent = formatPrecio(p.precio);
+        document.getElementById('pv-descripcion').textContent = p.descripcion;
+        document.getElementById('pv-badge').textContent = (getCategorias().find(c=>c.id===p.cat)||{label:p.cat}).label;
+
+        /* stock */
+        const sc = s===0?'pill-out':s<=3?'pill-low':'pill-ok';
+        const st = s===0?'<i class="bi bi-x-circle me-1"></i>Agotado':s<=3?`<i class="bi bi-fire me-1"></i>Últimas ${s} unidades`:`<i class="bi bi-check-circle me-1"></i>${s} unidades disponibles`;
+        document.getElementById('pv-stock-badge').innerHTML = `<span class="stock-pill ${sc}">${st}</span>`;
+
+        /* imagen principal */
+        const mainImg = document.getElementById('pv-main-img');
+        mainImg.src = todas[0]||'';
+
+        /* thumbnails */
+        const thumbsEl = document.getElementById('pv-thumbs');
+        thumbsEl.innerHTML = todas.map((url,i)=>`
+            <img src="${url}" alt="${p.nombre} ${i+1}" class="prod-detail-thumb${i===0?' active':''}"
+                 onclick="swapImg(this,'${url}')"
+                 onerror="this.style.display='none'">`).join('');
+
+        /* características */
+        const caract = p.caracteristicas||[];
+        document.getElementById('pv-caracteristicas').innerHTML = caract.length
+            ? `<p class="fw-semibold mb-2 small" style="color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;">Características</p>
+               <div class="d-flex flex-wrap gap-2">${caract.map(c=>`<span class="caracteristica-tag"><i class="bi bi-check2 text-primary-custom"></i>${c}</span>`).join('')}</div>`
+            : '';
+
+        /* botones — hide contact buttons when vendor views own product */
+        document.getElementById('pv-botones').innerHTML = agotado
+            ? `<button class="btn btn-secondary rounded-3 w-100" disabled><i class="bi bi-slash-circle me-2"></i>Producto agotado</button>`
+            : esMiPerfil ? '' /* vendor has no need to contact themselves */
+            : `<a href="https://wa.me/${waNumber(p.cel)}?text=Hola,%20me%20interesa%20el%20producto:%20${encodeURIComponent(p.nombre)}" target="_blank" class="btn btn-success rounded-3 w-100"><i class="bi bi-whatsapp me-2"></i>Contactar por WhatsApp</a>
+               <a href="mailto:${p.email}?subject=Consulta%20sobre%20${encodeURIComponent(p.nombre)}" class="btn btn-outline-custom rounded-3 w-100"><i class="bi bi-envelope me-2"></i>Enviar correo</a>`;
+
+        new bootstrap.Modal(document.getElementById('modalProductoView')).show();
+    };
+
+    window.swapImg = function(thumb, url) {
+        document.getElementById('pv-main-img').src = url;
+        document.querySelectorAll('.prod-detail-thumb').forEach(t=>t.classList.remove('active'));
+        thumb.classList.add('active');
+    };
+
+    /* ---- Render productos ---- */
+    function renderProducts() {
+        artesano = getArtesano(sellerId);
+        const prods = getProductos().filter(p => p.vendedorId===sellerId && (esMiPerfil||esAdmin||p.visible!==false));
+        const grid  = document.getElementById('products-grid');
+        if (!grid) return;
+        if (!prods.length) {
+            grid.innerHTML = `<div class="col-12 text-center py-5">
+                <i class="bi bi-box-seam display-4 d-block mb-3" style="color:var(--text-muted);"></i>
+                <p style="color:var(--text-muted);">Aún no hay productos.</p>
+                ${esMiPerfil?`<button class="btn btn-primary-custom px-4" onclick="openAddModal()"><i class="bi bi-plus-lg me-2"></i>Agregar primer producto</button>`:''}
+            </div>`; return;
+        }
+        grid.innerHTML = prods.map(p => {
+            const s=getStock(p.id), agotado=s===0, oculto=p.visible===false;
+            const overlay = agotado?`<div class="position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style="background:rgba(0,0,0,.45);top:0;left:0;border-radius:16px 16px 0 0;"><span style="color:#fff;font-size:1.3rem;font-weight:700;letter-spacing:.1em;">SOLD OUT</span></div>`:'';
+            const botones = agotado
+                ?`<button class="btn btn-secondary btn-sm rounded-3 w-100" disabled><i class="bi bi-slash-circle me-2"></i>Agotado</button>`
+                : esMiPerfil ? '' /* vendor never sees their own contact buttons */
+                :`<a href="https://wa.me/${waNumber(p.cel)}?text=Hola,%20me%20interesa:%20${encodeURIComponent(p.nombre)}" target="_blank" class="btn btn-success btn-sm rounded-3 w-100"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a>
+                  <a href="mailto:${p.email}?subject=Consulta%20${encodeURIComponent(p.nombre)}" class="btn btn-outline-secondary btn-sm rounded-3 w-100"><i class="bi bi-envelope me-2"></i>Correo</a>`;
+            const mgmt = (esMiPerfil||esAdmin)?`
+                <div class="d-flex gap-1 mt-2">
+                    ${esMiPerfil?`
+                    <button class="btn btn-outline-custom btn-sm rounded-3 flex-fill" onclick="openEditModal(${p.id})"><i class="bi bi-pencil me-1"></i>Editar</button>
+                    <button class="btn btn-sm rounded-3 flex-fill" style="border:2px solid rgba(220,53,69,.4);color:#dc3545;" onclick="toggleVisibility(${p.id})"><i class="bi bi-eye${oculto?'':'-slash'} me-1"></i>${oculto?'Mostrar':'Ocultar'}</button>
+                    <button class="btn btn-sm rounded-3" style="border:2px solid rgba(220,53,69,.4);color:#dc3545;" onclick="eliminarProducto(${p.id})"><i class="bi bi-trash"></i></button>`:''}
+                    ${esAdmin&&!esMiPerfil?`
+                    <button class="btn btn-sm rounded-3 flex-fill" style="border:2px solid rgba(220,53,69,.4);color:#dc3545;" onclick="toggleVisibility(${p.id})"><i class="bi bi-eye${oculto?'':'-slash'} me-1"></i>${oculto?'Mostrar':'Ocultar'}</button>
+                    <button class="btn btn-sm rounded-3" style="border:2px solid rgba(220,53,69,.4);color:#dc3545;" onclick="eliminarProducto(${p.id})"><i class="bi bi-trash"></i></button>`:''}
+                </div>`:'';
+            return `<div class="col-sm-6 col-lg-4 fade-in-up">
+                <div class="card h-100 product-card rounded-4 border-0 shadow-sm${agotado?' sold-out-card':''}${oculto?' opacity-50':''}">
+                    ${oculto?`<div class="position-absolute top-0 start-0 m-2" style="z-index:2;"><span class="badge rounded-pill" style="background:#6c757d;font-size:.68rem;"><i class="bi bi-eye-slash me-1"></i>Oculto</span></div>`:''}
+                    <div class="position-relative overflow-hidden" style="border-radius:16px 16px 0 0;">
+                        <img src="${p.img}" alt="${p.nombre}" style="width:100%;height:210px;object-fit:cover;${agotado?'filter:grayscale(.5);':''}">
+                        ${overlay}
+                        <span class="badge position-absolute top-0 start-0 m-2 px-2 py-1 rounded-pill" style="background:var(--primary);color:#fff;font-size:.68rem;${oculto?'margin-top:1.8rem!important;':''}">${p.cat.toUpperCase()}</span>
+                        ${pillBadge(s)}
+                        ${(p.galeria||[]).length?`<span class="position-absolute bottom-0 end-0 m-2 px-2 py-1 rounded-pill" style="background:rgba(0,0,0,.55);color:#fff;font-size:.68rem;"><i class="bi bi-images me-1"></i>${(p.galeria||[]).length+1} fotos</span>`:''}
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <h5 class="fw-bold mb-1" style="font-size:.93rem;">${p.nombre}</h5>
+                        <p class="small mb-1" style="color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.descripcion}</p>
+                        <p class="fw-bold text-primary-custom mb-2">${formatPrecio(p.precio)}</p>
+                        <div class="mt-auto d-flex flex-column gap-2">
+                            <button class="btn btn-outline-custom btn-sm rounded-3 w-100" onclick="verProducto(${p.id})">
+                                <i class="bi bi-eye me-1"></i>Ver detalle
+                            </button>
+                            ${botones}${mgmt}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    /* ---- Render hero ---- */
+    function renderHero() {
+        artesano = getArtesano(sellerId);
+        const myProds = getProductos().filter(p=>p.vendedorId===sellerId);
+        document.getElementById('hero-avatar').src      = artesano.avatar || DEFAULT_AVATAR;
+        document.getElementById('hero-avatar').onerror   = function(){ this.src = DEFAULT_AVATAR; };
+        document.getElementById('hero-nombre').textContent = artesano.nombre;
+        document.getElementById('hero-esp').textContent    = artesano.especialidad;
+        document.getElementById('hero-ubicacion').textContent = artesano.ubicacion;
+        document.getElementById('hero-bio').textContent    = artesano.bio;
+        document.getElementById('hero-stars').innerHTML   = stars(artesano.calificacion)+` <span class="ms-1 fw-bold">${artesano.calificacion}</span><span class="ms-1 small" style="color:var(--text-muted);">(${artesano.ventas} ventas)</span>`;
+        document.getElementById('hero-wa').href    = `https://wa.me/${waNumber(artesano.cel)}?text=Hola%20${encodeURIComponent(artesano.nombre)}`;
+        document.getElementById('hero-email').href = `mailto:${artesano.email}`;
+        document.getElementById('stat-anios').textContent  = artesano.anios;
+        document.getElementById('stat-ventas').textContent = artesano.ventas;
+        document.getElementById('stat-prods').textContent  = myProds.length;
+        document.getElementById('stat-calif').textContent  = artesano.calificacion;
+    }
+
+    /* ---- Construir página ---- */
+    contentEl.innerHTML = `
+    <section class="seller-hero">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-auto"><img id="hero-avatar" src="" alt="" class="seller-avatar"></div>
+                <div class="col">
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                        <span class="badge rounded-pill px-3 py-2" style="background:var(--section-bg);color:var(--primary);border:1px solid var(--border-color);font-size:.75rem;"><i class="bi bi-patch-check-fill me-1"></i>Artesano verificado</span>
+                        <span class="badge rounded-pill px-3 py-2" style="background:var(--section-bg);color:var(--text-muted);border:1px solid var(--border-color);font-size:.75rem;"><i class="bi bi-geo-alt me-1"></i><span id="hero-ubicacion"></span></span>
+                        ${esMiPerfil?`<span class="badge rounded-pill px-3 py-2" style="background:rgba(25,135,84,.12);color:#198754;border:1px solid rgba(25,135,84,.25);font-size:.75rem;"><i class="bi bi-shield-check me-1"></i>Tu perfil</span>`:''}
+                    </div>
+                    <h1 class="fw-bold mb-1" id="hero-nombre" style="font-size:2rem;"></h1>
+                    <p class="mb-2 text-primary-custom fw-semibold" id="hero-esp"></p>
+                    <div class="d-flex align-items-center gap-2 mb-3" id="hero-stars"></div>
+                    <p class="mb-4" id="hero-bio" style="color:var(--text-muted);max-width:540px;"></p>
+                    <div class="d-flex flex-wrap gap-2">
+                        ${!esMiPerfil ? `<a id="hero-wa" href="#" target="_blank" class="btn btn-success seller-contact-btn"><i class="bi bi-whatsapp me-2"></i>WhatsApp</a>` : '<a id="hero-wa" href="#" style="display:none;"></a>'}
+                        ${!esMiPerfil ? `<a id="hero-email" href="#" class="btn btn-outline-custom seller-contact-btn"><i class="bi bi-envelope me-2"></i>Correo</a>` : '<a id="hero-email" href="#" style="display:none;"></a>'}
+                        ${esMiPerfil?`<button class="btn btn-outline-custom seller-contact-btn" onclick="openPerfilModal()"><i class="bi bi-pencil me-1"></i>Editar perfil</button>`:''}
+                    <a href="index.html" class="btn seller-contact-btn" style="border:2px solid var(--border-color);color:var(--text-muted);background:transparent;"><i class="bi bi-arrow-left me-1"></i>Ver artesanos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3 mt-4">
+                <div class="col-6 col-md-3"><div class="seller-stat-card"><div class="stat-number" id="stat-anios"></div><div class="stat-label">Años de experiencia</div></div></div>
+                <div class="col-6 col-md-3"><div class="seller-stat-card"><div class="stat-number" id="stat-ventas"></div><div class="stat-label">Ventas realizadas</div></div></div>
+                <div class="col-6 col-md-3"><div class="seller-stat-card"><div class="stat-number" id="stat-prods"></div><div class="stat-label">Productos</div></div></div>
+                <div class="col-6 col-md-3"><div class="seller-stat-card"><div class="stat-number" id="stat-calif"></div><div class="stat-label">Calificación</div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="seller-products-grid">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                <h2 class="fw-bold mb-0">Productos${esMiPerfil?' de tu taller':''}</h2>
+                <div class="d-flex gap-2 flex-wrap">
+                    ${esMiPerfil?`<button class="btn btn-primary-custom rounded-3 px-3" onclick="openAddModal()"><i class="bi bi-plus-lg me-2"></i>Agregar producto</button>`:''}
+                    <a href="catalogo.html" class="btn btn-outline-custom btn-sm rounded-3"><i class="bi bi-grid me-1"></i>Catálogo completo</a>
+                </div>
+            </div>
+            <div class="row g-4" id="products-grid"></div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-section">
+        <div class="container">
+            <h3 class="fw-bold mb-4 text-center">Otros artesanos</h3>
+            <div class="row g-4 justify-content-center" id="other-sellers"></div>
+        </div>
+    </section>`;
+
+    renderHero();
+    renderProducts();
+
+    /* Otros artesanos */
+    getArtesanos().filter(a=>a.id!==sellerId&&a.activo!==false).forEach(a=>{
+        const n=getProductos().filter(p=>p.vendedorId===a.id).length;
+        document.getElementById('other-sellers').innerHTML+=`
+        <div class="col-sm-6 col-md-4">
+            <a href="seller.html?id=${a.id}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm rounded-4 p-3 h-100 benefit-card text-center" style="cursor:pointer;">
+                    <img src="${a.avatar}" alt="${a.nombre}" class="rounded-circle mx-auto mb-2 border border-3 border-primary-custom" width="70" height="70" style="object-fit:cover;">
+                    <h6 class="fw-bold mb-1">${a.nombre}</h6>
+                    <p class="small text-primary-custom mb-1">${a.especialidad}</p>
+                    <p class="small mb-1" style="color:var(--text-muted);"><i class="bi bi-geo-alt me-1"></i>${a.ubicacion}</p>
+                    <span class="small" style="color:var(--text-muted);"><i class="bi bi-box-seam me-1 text-primary-custom"></i>${n} producto${n!==1?'s':''}</span>
+                </div>
+            </a>
+        </div>`;
+    });
+
+    /* ---- Modal agregar/editar producto ---- */
+    function fillCatSelect(selectedCat) {
+        document.getElementById('mp-cat').innerHTML = getCategorias().map(c=>`<option value="${c.id}"${c.id===selectedCat?' selected':''}>${c.label}</option>`).join('');
+    }
+
+    window.openAddModal = function() {
+        document.getElementById('modalProductoTitle').textContent = 'Agregar producto';
+        ['mp-id','mp-nombre','mp-precio','mp-img','mp-desc','mp-galeria','mp-caract'].forEach(id=>document.getElementById(id).value='');
+        document.getElementById('mp-img-preview').innerHTML='';
+        document.getElementById('mp-stock').value='1';
+        document.getElementById('mp-visible').value='true';
+        document.getElementById('mp-alert').className='alert d-none';
+        fillCatSelect('');
+        new bootstrap.Modal(document.getElementById('modalProducto')).show();
+    };
+
+    window.openEditModal = function(id) {
+        const p=getProducto(id); if(!p) return;
+        document.getElementById('modalProductoTitle').textContent='Editar producto';
+        document.getElementById('mp-id').value=p.id;
+        document.getElementById('mp-nombre').value=p.nombre;
+        document.getElementById('mp-precio').value=p.precio;
+        document.getElementById('mp-img').value=p.img;
+        document.getElementById('mp-img-preview').innerHTML=`<img src="${p.img}" class="rounded-3 mt-1" style="height:70px;object-fit:cover;" onerror="this.style.display='none'">`;
+        document.getElementById('mp-stock').value=getStock(p.id);
+        document.getElementById('mp-desc').value=p.descripcion;
+        document.getElementById('mp-visible').value=String(p.visible!==false);
+        document.getElementById('mp-galeria').value=(p.galeria||[]).join('\n');
+        document.getElementById('mp-caract').value=(p.caracteristicas||[]).join('\n');
+        document.getElementById('mp-alert').className='alert d-none';
+        fillCatSelect(p.cat);
+        new bootstrap.Modal(document.getElementById('modalProducto')).show();
+    };
+
+    document.getElementById('mp-img').addEventListener('input',function(){
+        const p=document.getElementById('mp-img-preview');
+        p.innerHTML=this.value?`<img src="${this.value}" class="rounded-3 mt-1" style="height:70px;object-fit:cover;" onerror="this.style.display='none'">`:'';
+    });
+
+    document.getElementById('mp-save').addEventListener('click',()=>{
+        const nombre  = document.getElementById('mp-nombre').value.trim();
+        const precio  = document.getElementById('mp-precio').value.trim();
+        const img     = document.getElementById('mp-img').value.trim();
+        const desc    = document.getElementById('mp-desc').value.trim();
+        const cat     = document.getElementById('mp-cat').value;
+        const stock   = parseInt(document.getElementById('mp-stock').value)||0;
+        const visible = document.getElementById('mp-visible').value==='true';
+        const mpId    = document.getElementById('mp-id').value;
+        const galeria = document.getElementById('mp-galeria').value.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,5);
+        const caract  = document.getElementById('mp-caract').value.split('\n').map(s=>s.trim()).filter(Boolean);
+        const alertEl = document.getElementById('mp-alert');
+
+        if(!nombre||!precio||!img||!desc){alertEl.className='alert alert-warning d-block rounded-3';alertEl.textContent='Completa los campos obligatorios (*).';return;}
+
+        const a=getArtesano(sellerId);
+        if(mpId){
+            updateProducto(parseInt(mpId),{nombre,precio,img,descripcion:desc,cat,visible,galeria,caracteristicas:caract});
+            setStock(parseInt(mpId),stock);
+        } else {
+            const np=addProducto({nombre,precio,precioNum:0,img,descripcion:desc,cat,visible,stockInicial:stock,galeria,caracteristicas:caract,vendedorId:sellerId,vendedor:a.nombre,cel:a.cel,email:a.email});
+            setStock(np.id,stock);
+        }
+        bootstrap.Modal.getInstance(document.getElementById('modalProducto')).hide();
+        renderProducts();
+    });
+
+    window.eliminarProducto = function(id) {
+        if(!confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) return;
+        deleteProducto(id); renderProducts();
+    };
+    window.toggleVisibility = function(id) {
+        const p=getProducto(id); if(!p) return;
+        updateProducto(id,{visible:!p.visible}); renderProducts();
+    };
+
+    /* ---- Modal perfil ---- */
+    window.openPerfilModal = function() {
+        const a = getArtesano(sellerId);
+        document.getElementById('ep-nombre').value       = a.nombre;
+        document.getElementById('ep-especialidad').value = a.especialidad;
+        document.getElementById('ep-ubicacion').value    = a.ubicacion;
+        /* Show 10 digits only */
+        const celDigits = String(a.cel||'').replace(/\D/g,'');
+        document.getElementById('ep-cel').value = celDigits.length > 10 ? celDigits.slice(-10) : celDigits;
+        document.getElementById('ep-email').value        = a.email;
+        document.getElementById('ep-bio').value          = a.bio;
+        document.getElementById('ep-anios').value        = a.anios || 0;
+        document.getElementById('ep-ventas').value       = a.ventas || 0;
+        document.getElementById('ep-calificacion').value = a.calificacion || 5.0;
+        document.getElementById('ep-avatar-preview').src = a.avatar || DEFAULT_AVATAR;
+        document.getElementById('ep-avatar-file').value  = '';
+        document.getElementById('ep-alert').className    = 'alert d-none';
+        new bootstrap.Modal(document.getElementById('modalPerfil')).show();
+    };
+
+    /* Digits-only enforcement for phone */
+    document.getElementById('ep-cel').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g,'').slice(0,10);
+    });
+
+    /* Live preview when file selected */
+    document.getElementById('ep-avatar-file').addEventListener('change', function() {
+        const file = this.files[0];
+        if (!file) return;
+        if (file.size > 2*1024*1024) {
+            document.getElementById('ep-alert').className = 'alert alert-warning d-block rounded-3';
+            document.getElementById('ep-alert').textContent = 'La imagen supera 2 MB. Elige una más pequeña.';
+            this.value = ''; return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => { document.getElementById('ep-avatar-preview').src = e.target.result; };
+        reader.readAsDataURL(file);
+    });
+
+    document.getElementById('ep-save').addEventListener('click', () => {
+        const alertEl = document.getElementById('ep-alert');
+        const celRaw  = document.getElementById('ep-cel').value.replace(/\D/g,'');
+        if (celRaw && celRaw.length !== 10) {
+            alertEl.className = 'alert alert-warning d-block rounded-3';
+            alertEl.textContent = 'El teléfono debe tener exactamente 10 dígitos.';
+            document.getElementById('ep-cel').focus(); return;
+        }
+        const file = document.getElementById('ep-avatar-file').files[0];
+        const doSave = (avatarSrc) => {
+            const celNorm = celRaw ? waNumber(celRaw) : (getArtesano(sellerId).cel || '');
+            const aniosVal  = Math.max(0, parseInt(document.getElementById('ep-anios').value) || 0);
+            const ventasVal = Math.max(0, parseInt(document.getElementById('ep-ventas').value) || 0);
+            const califVal  = Math.min(5, Math.max(1, parseFloat(document.getElementById('ep-calificacion').value) || 5));
+            const data = {
+                nombre:         document.getElementById('ep-nombre').value.trim(),
+                especialidad:   document.getElementById('ep-especialidad').value.trim(),
+                ubicacion:      document.getElementById('ep-ubicacion').value.trim(),
+                cel:            celNorm,
+                email:          document.getElementById('ep-email').value.trim(),
+                bio:            document.getElementById('ep-bio').value.trim(),
+                avatar:         avatarSrc,
+                anios:          aniosVal,
+                ventas:         ventasVal,
+                calificacion:   califVal
+            };
+            if (!data.nombre) {
+                alertEl.className = 'alert alert-warning d-block rounded-3';
+                alertEl.textContent = 'El nombre no puede estar vacío.'; return;
+            }
+            updateArtesano(sellerId, data);
+            /* Sync cel + email to all products of this vendor */
+            if (celNorm || data.email) {
+                const prods = getProductos();
+                let changed = false;
+                prods.forEach(p => { if (p.vendedorId === sellerId) { p.cel = celNorm || p.cel; p.email = data.email || p.email; changed = true; } });
+                if (changed) saveProductos(prods);
+            }
+            bootstrap.Modal.getInstance(document.getElementById('modalPerfil')).hide();
+            renderHero();
+            renderProducts();
+        };
+        if (file) {
+            if (file.size > 2*1024*1024) { alertEl.className='alert alert-warning d-block rounded-3'; alertEl.textContent='La imagen supera 2 MB.'; return; }
+            const reader = new FileReader();
+            reader.onload = e => doSave(e.target.result);
+            reader.onerror = () => { alertEl.className='alert alert-danger d-block rounded-3'; alertEl.textContent='Error al leer el archivo.'; };
+            reader.readAsDataURL(file);
+        } else {
+            doSave(getArtesano(sellerId).avatar || DEFAULT_AVATAR);
+        }
+    });
+});
+</script>
+</body>
+</html>

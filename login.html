@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteTam | Acceso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html"><i class="bi bi-palette-fill me-2"></i>ArteTam</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#catalogo">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle" style="width:40px;height:40px;padding:0;"><i class="bi bi-moon-fill" id="theme-icon"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="login-page">
+    <!-- Tabs: Login / Registro -->
+    <div style="width:100%;max-width:460px;">
+        <div class="d-flex rounded-pill mb-4 overflow-hidden" style="background:var(--section-bg);border:1px solid var(--border-color);">
+            <button id="tab-login-btn" class="flex-fill py-2 fw-semibold border-0 rounded-pill" style="background:var(--primary);color:#fff;transition:all .2s;" onclick="showTab('login')">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
+            </button>
+            <button id="tab-reg-btn" class="flex-fill py-2 fw-semibold border-0 rounded-pill" style="background:transparent;color:var(--text-muted);transition:all .2s;" onclick="showTab('registro')">
+                <i class="bi bi-person-plus me-1"></i>Solicitar registro
+            </button>
+        </div>
+
+        <!-- === LOGIN === -->
+        <div id="panel-login" class="login-card fade-in-up">
+            <div class="login-icon"><i class="bi bi-shop-window"></i></div>
+            <h1 class="login-title">Acceso al Sistema</h1>
+            <p class="login-subtitle">Vendedores y administradores de ArteTam</p>
+            <div class="text-center mb-3">
+                <span class="vendor-badge"><i class="bi bi-shield-check"></i> Solo para usuarios registrados</span>
+            </div>
+            <div id="login-alert" class="alert d-none mb-3"></div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control rounded-3" id="l-email" placeholder="correo@ejemplo.com">
+                <label><i class="bi bi-envelope me-1"></i> Correo electrónico</label>
+            </div>
+            <div class="form-floating mb-3 position-relative">
+                <input type="password" class="form-control rounded-3 pe-5" id="l-pass" placeholder="Contraseña">
+                <label><i class="bi bi-lock me-1"></i> Contraseña</label>
+                <button type="button" id="toggle-pass" class="btn btn-sm position-absolute top-50 end-0 translate-middle-y me-3 p-0 border-0 bg-transparent" style="color:var(--text-muted);z-index:10;">
+                    <i class="bi bi-eye" id="pass-icon"></i>
+                </button>
+            </div>
+            <button type="button" id="btn-login" class="btn btn-login mb-3">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+            </button>
+            <div class="rounded-3 p-3 mb-3" style="background:var(--section-bg);border:1px solid var(--border-color);font-size:.78rem;">
+                <p class="mb-1 fw-semibold" style="color:var(--text-muted);"><i class="bi bi-info-circle me-1"></i>Cuentas de prueba:</p>
+                <p class="mb-0" style="color:var(--text-muted);">Admin: <strong>admin@adminat.com</strong> / <strong>admin2026</strong></p>
+                <p class="mb-0" style="color:var(--text-muted);">Vendedor: <strong>juan@artesanos.com</strong> / <strong>artesano123</strong></p>
+            </div>
+            <a href="index.html" class="back-link"><i class="bi bi-arrow-left me-1"></i>Regresar al catálogo</a>
+        </div>
+
+        <!-- === SOLICITUD DE REGISTRO === -->
+        <div id="panel-registro" class="login-card fade-in-up" style="display:none;">
+            <div class="login-icon" style="background:linear-gradient(135deg,#198754,#0a5c36);"><i class="bi bi-person-plus"></i></div>
+            <h1 class="login-title">Solicitar Registro</h1>
+            <p class="login-subtitle">Completa tu información para unirte a ArteTam como artesano vendedor</p>
+            <div id="reg-alert" class="alert d-none mb-3"></div>
+            <div class="row g-2 mb-2">
+                <div class="col-12">
+                    <label class="form-label small fw-semibold">Nombre completo *</label>
+                    <input type="text" class="form-control rounded-3" id="r-nombre" placeholder="Tu nombre">
+                </div>
+                <div class="col-12">
+                    <label class="form-label small fw-semibold">Correo electrónico *</label>
+                    <input type="email" class="form-control rounded-3" id="r-email" placeholder="tu@artesano.com">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Teléfono (10 dígitos) *</label>
+                    <input type="tel" class="form-control rounded-3" id="r-tel"
+                           placeholder="5512345678" maxlength="10" inputmode="numeric" pattern="[0-9]{10}">
+                    <div class="form-text" style="font-size:.72rem;color:var(--text-muted);">Solo números, sin código de país</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Especialidad *</label>
+                    <input type="text" class="form-control rounded-3" id="r-esp" placeholder="Cerámica, Textiles...">
+                </div>
+                <div class="col-12">
+                    <label class="form-label small fw-semibold">Ubicación / Taller</label>
+                    <input type="text" class="form-control rounded-3" id="r-ubicacion" placeholder="Ciudad, Estado">
+                </div>
+                <div class="col-12">
+                    <label class="form-label small fw-semibold">Cuéntanos sobre tu trabajo *</label>
+                    <textarea class="form-control rounded-3" id="r-bio" rows="3" placeholder="¿Qué produces? ¿Cuántos años llevas? ¿Qué técnicas usas?"></textarea>
+                </div>
+            </div>
+            <button type="button" id="btn-registro" class="btn btn-login mb-3" style="background:linear-gradient(135deg,#198754,#0a5c36);">
+                <i class="bi bi-send me-2"></i>Enviar solicitud
+            </button>
+            <a href="index.html" class="back-link"><i class="bi bi-arrow-left me-1"></i>Regresar al catálogo</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+function showTab(tab) {
+    const isLogin = tab === 'login';
+    document.getElementById('panel-login').style.display    = isLogin ? '' : 'none';
+    document.getElementById('panel-registro').style.display = isLogin ? 'none' : '';
+    document.getElementById('tab-login-btn').style.background = isLogin ? 'var(--primary)' : 'transparent';
+    document.getElementById('tab-login-btn').style.color      = isLogin ? '#fff' : 'var(--text-muted)';
+    document.getElementById('tab-reg-btn').style.background   = !isLogin ? 'var(--primary)' : 'transparent';
+    document.getElementById('tab-reg-btn').style.color        = !isLogin ? '#fff' : 'var(--text-muted)';
+}
+
+/* Mostrar/ocultar contraseña */
+document.getElementById('toggle-pass').addEventListener('click', () => {
+    const p = document.getElementById('l-pass'), i = document.getElementById('pass-icon');
+    p.type = p.type==='text'?'password':'text';
+    i.className = p.type==='text'?'bi bi-eye-slash':'bi bi-eye';
+});
+
+/* Login */
+document.getElementById('btn-login').addEventListener('click', () => {
+    const email = document.getElementById('l-email').value.trim().toLowerCase();
+    const pass  = document.getElementById('l-pass').value;
+    const alertEl = document.getElementById('login-alert');
+    const btn   = document.getElementById('btn-login');
+    if (!email||!pass) { showAlert(alertEl,'Completa todos los campos.','warning'); return; }
+    btn.disabled=true; btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Verificando...';
+    setTimeout(() => {
+        const result = loginUser(email, pass);
+        if (result && result.__suspended) {
+            showAlert(alertEl,
+                '<i class="bi bi-slash-circle me-2"></i>Tu cuenta ha sido <strong>suspendida</strong>. Contacta al administrador en <a href="mailto:admin@adminat.com">admin@adminat.com</a>.',
+                'warning');
+            btn.disabled=false; btn.innerHTML='<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
+        } else if (result) {
+            setSession(result);
+            showAlert(alertEl,`¡Bienvenido, ${result.nombre}! Redirigiendo...`,'success');
+            setTimeout(() => { window.location.href = result.rol==='admin'?'admin.html':`seller.html?id=${result.vendedorId}`; }, 900);
+        } else {
+            showAlert(alertEl,'Correo o contraseña incorrectos.','danger');
+            btn.disabled=false; btn.innerHTML='<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
+        }
+    }, 800);
+});
+document.getElementById('l-pass').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('btn-login').click(); });
+
+/* Solicitud de registro */
+/* Digits-only for phone */
+document.getElementById('r-tel').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g,'').slice(0,10);
+});
+
+document.getElementById('btn-registro').addEventListener('click', () => {
+    const nombre    = document.getElementById('r-nombre').value.trim();
+    const email     = document.getElementById('r-email').value.trim();
+    const tel       = document.getElementById('r-tel').value.replace(/\D/g,'');
+    const esp       = document.getElementById('r-esp').value.trim();
+    const ubicacion = document.getElementById('r-ubicacion').value.trim();
+    const bio       = document.getElementById('r-bio').value.trim();
+    const alertEl   = document.getElementById('reg-alert');
+    const btn       = document.getElementById('btn-registro');
+
+    if (!nombre||!email||!tel||!esp||!bio) { showAlert(alertEl,'Completa los campos obligatorios (*)','warning'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAlert(alertEl,'Ingresa un correo electrónico válido.','warning'); return; }
+    if (tel.length !== 10) {
+        showAlert(alertEl,'El teléfono debe tener exactamente 10 dígitos.','warning');
+        document.getElementById('r-tel').focus(); return;
+    }
+    btn.disabled=true; btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
+
+    setTimeout(() => {
+        addSolicitud({ nombre, email, tel, especialidad:esp, ubicacion, bio });
+        alertEl.className='alert alert-success d-block rounded-3';
+        alertEl.innerHTML=`<i class="bi bi-check-circle-fill me-2"></i><strong>¡Solicitud enviada!</strong><br>
+            Revisaremos tu información y te contactaremos en los próximos 2-3 días hábiles al correo <strong>${email}</strong>.`;
+        ['r-nombre','r-email','r-tel','r-esp','r-ubicacion','r-bio'].forEach(id => document.getElementById(id).value='');
+        btn.disabled=false; btn.innerHTML='<i class="bi bi-send me-2"></i>Enviar solicitud';
+    }, 900);
+});
+
+function showAlert(el, msg, type) { el.className=`alert alert-${type} d-block rounded-3`; el.innerHTML=msg; }
+</script>
+</body>
+</html>

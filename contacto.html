@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArteTam | Contacto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary-custom" href="index.html"><i class="bi bi-palette-fill me-2"></i>ArteTam</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#catalogo">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="galeria.html">Galería</a></li>
+                <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                <a href="login.html" id="nav-login-btn" class="btn btn-outline-custom btn-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-shop"></i><span>Solo para vendedores</span>
+                </a>
+                <button id="theme-toggle" class="btn btn-outline-custom rounded-circle" style="width:40px;height:40px;padding:0;"><i class="bi bi-moon-fill" id="theme-icon"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5 bg-section border-bottom" style="border-color:var(--border-color)!important;">
+    <div class="container text-center">
+        <span class="badge mb-3 px-3 py-2 rounded-pill" style="background:var(--card-color);color:var(--primary);border:1px solid var(--border-color);">
+            <i class="bi bi-chat-dots-fill me-1"></i> Contáctanos
+        </span>
+        <h1 class="fw-bold display-5 mb-3">¿Tienes alguna pregunta?</h1>
+        <p class="lead" style="color:var(--text-muted);max-width:520px;margin:0 auto;">
+            Escríbenos y te responderemos a la brevedad. Para comprar, contacta directamente al vendedor en el catálogo.
+        </p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-5 justify-content-center">
+
+            <!-- Info -->
+            <div class="col-lg-4">
+                <h4 class="fw-bold mb-4">Información de contacto</h4>
+                <div class="d-flex flex-column gap-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-geo-alt text-white fs-5"></i>
+                        </div>
+                        <div><h6 class="fw-bold mb-1">Dirección</h6><p class="mb-0 small" style="color:var(--text-muted);">Centro Histórico<br>Cd. Victoria, Tamaulipas</p></div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-telephone text-white fs-5"></i>
+                        </div>
+                        <div><h6 class="fw-bold mb-1">Teléfono</h6><p class="mb-0 small" style="color:var(--text-muted);">+52 12 3456 7890<br>Lun–Vie: 9am – 6pm</p></div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                        <div style="width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary-hover));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="bi bi-envelope text-white fs-5"></i>
+                        </div>
+                        <div><h6 class="fw-bold mb-1">Correo</h6><p class="mb-0 small" style="color:var(--text-muted);">info@artetam.com<br>registro@artetam.com</p></div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <h5 class="fw-bold mb-3">¿Eres artesano?</h5>
+                    <div class="card border-0 rounded-4 p-3 shadow-sm benefit-card">
+                        <p class="small mb-3" style="color:var(--text-muted);">Regístrate como vendedor para publicar tus productos.</p>
+                        <a href="login.html" class="btn btn-primary-custom btn-sm rounded-3">
+                            <i class="bi bi-shop me-2"></i>Registrarme como vendedor
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario -->
+            <div class="col-lg-7">
+                <div id="form-alert" class="alert d-none mb-4 rounded-4" role="alert"></div>
+                <form id="contactForm" class="card border-0 shadow-sm rounded-4 p-4 bg-card" novalidate>
+                    <h4 class="fw-bold mb-4">Envíanos un mensaje</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Completo *</label>
+                            <input type="text" class="form-control rounded-3" id="c-nombre" placeholder="Tu nombre" required>
+                            <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono *</label>
+                            <input type="tel" class="form-control rounded-3" id="c-tel"
+                                   placeholder="8000000000" inputmode="numeric" pattern="[0-9]{10}"
+                                   maxlength="10" minlength="10" required
+                                   autocomplete="tel-national">
+                            <div class="invalid-feedback">Ingresa un número telefónico válido de 10 dígitos.</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Correo Electrónico *</label>
+                            <input type="email" class="form-control rounded-3" id="c-email" placeholder="tu@correo.com" required>
+                            <div class="invalid-feedback">Ingresa un correo válido.</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Asunto</label>
+                            <select class="form-select rounded-3" id="c-asunto">
+                                <option value="general">Consulta general</option>
+                                <option value="vendedor">Quiero ser vendedor</option>
+                                <option value="soporte">Soporte técnico</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Mensaje *</label>
+                            <textarea class="form-control rounded-3" id="c-mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                            <div class="invalid-feedback">El mensaje no puede estar vacío.</div>
+                        </div>
+                        <div class="col-12 text-end mt-2">
+                            <button type="submit" class="btn btn-primary-custom px-5 py-2 rounded-3">
+                                <i class="bi bi-send me-2"></i>Enviar Mensaje
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white py-4">
+    <div class="container text-center"><small style="color:rgba(255,255,255,.5);">&copy; 2026 ArteTam. Todos los derechos reservados.</small></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data.js"></script>
+<script>
+document.getElementById('c-tel').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+});
+
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!this.checkValidity()) { this.classList.add('was-validated'); return; }
+
+    const nombre  = document.getElementById('c-nombre').value.trim();
+    const tel     = document.getElementById('c-tel').value.trim();
+    const email   = document.getElementById('c-email').value.trim();
+    const asunto  = document.getElementById('c-asunto').value;
+    const mensaje = document.getElementById('c-mensaje').value.trim();
+    const alertEl = document.getElementById('form-alert');
+    const btn     = this.querySelector('[type="submit"]');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
+
+    setTimeout(() => {
+        /* Guardar en localStorage para que el admin lo vea */
+        addMensaje({ nombre, email, tel, asunto, mensaje });
+
+        alertEl.className = 'alert alert-success d-block rounded-4';
+        alertEl.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i><strong>¡Mensaje enviado!</strong> Te responderemos a la brevedad. También puedes contactarnos por WhatsApp al +52 12 3456 7890.';
+        this.reset();
+        this.classList.remove('was-validated');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send me-2"></i>Enviar Mensaje';
+        window.scrollTo({ top:0, behavior:'smooth' });
+    }, 900);
+});
+</script>
+</body>
+</html>
