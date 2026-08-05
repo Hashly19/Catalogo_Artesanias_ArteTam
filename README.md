@@ -1,4 +1,4 @@
-# 🎨 ArteTam - Catálogo Digital de Artesanías de Tamaulipas
+#  ArteTam - Catálogo Digital de Artesanías de Tamaulipas
 
 ¡Bienvenido a **ArteTam**! Este proyecto es un **catálogo interactivo web** diseñado para promover y exhibir artesanías regionales del estado de Tamaulipas, conectando a clientes, artesanos y administradores en una sola plataforma.
 
@@ -6,35 +6,35 @@ Este repositorio contiene una aplicación web frontend estructurada con **HTML5,
 
 ---
 
-## 📋 Tabla de Contenidos
-- [✨ Características del Proyecto](#-características-del-proyecto)
-- [📁 Estructura del Proyecto](#-estructura-del-proyecto)
-- [🛠️ Requisitos Previos](#️-requisitos-previos)
-- [🚀 Guía de Instalación y Uso (Paso a Paso)](#-guía-de-instalación-y-uso-paso-a-paso)
+## Tabla de Contenidos
+- [ Características del Proyecto](#-características-del-proyecto)
+- [ Estructura del Proyecto](#-estructura-del-proyecto)
+- [ Requisitos Previos](#️-requisitos-previos)
+- [ Guía de Instalación y Uso (Paso a Paso)](#-guía-de-instalación-y-uso-paso-a-paso)
   - [Opción 1: Descarga Directa (Para principiantes)](#opción-1-descarga-directa-para-principiantes)
   - [Opción 2: Clonar con Git](#opción-2-clonar-con-git)
-- [🖥️ Cómo Ejecutar el Proyecto](#️-cómo-ejecutar-el-proyecto)
-- [🌐 Despliegue Gratis en GitHub Pages](#-despliegue-gratis-en-github-pages)
-- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
-- [🤝 Contribución](#-contribución)
+- [ Cómo Ejecutar el Proyecto](#️-cómo-ejecutar-el-proyecto)
+- [ Despliegue Gratis en GitHub Pages](#-despliegue-gratis-en-github-pages)
+- [ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
+- [Contribución](#-contribución)
 
 ---
 
-## ✨ Características del Proyecto
+##  Características del Proyecto
 
-- 🏠 **Inicio (`index.html`)**: Presentación principal y banner de bienvenida.
-- 🛍️ **Catálogo de Productos (`catalogo.html`)**: Visualización interactiva de artesanías locales.
-- 🖼️ **Galería (`galeria.html`)**: Muestrario de imágenes y piezas destacadas.
-- ℹ️ **Nosotros (`nosotros.html`)**: Información sobre la visión del proyecto y el apoyo a los artesanos.
-- 📞 **Contacto (`contacto.html`)**: Formulario para atención e información.
-- 🔐 **Inicio de Sesión (`login.html`)**: Módulo de acceso para usuarios.
-- 🛠️ **Panel Administrativo (`admin.html`)**: Vista de gestión general.
-- 🛒 **Panel de Artesano/Vendedor (`seller.html`)**: Espacio adaptado para administradores del catálogo de productos.
-- 🎨 **Diseño Adaptativo**: Estilos personalizados en `styles.css` compatibles con navegadores modernos.
+-  **Inicio (`index.html`)**: Presentación principal y banner de bienvenida.
+-  **Catálogo de Productos (`catalogo.html`)**: Visualización interactiva de artesanías locales.
+- **Galería (`galeria.html`)**: Muestrario de imágenes y piezas destacadas.
+-  **Nosotros (`nosotros.html`)**: Información sobre la visión del proyecto y el apoyo a los artesanos.
+-  **Contacto (`contacto.html`)**: Formulario para atención e información.
+-  **Inicio de Sesión (`login.html`)**: Módulo de acceso para usuarios.
+-  **Panel Administrativo (`admin.html`)**: Vista de gestión general.
+-  **Panel de Artesano/Vendedor (`seller.html`)**: Espacio adaptado para administradores del catálogo de productos.
+-  **Diseño Adaptativo**: Estilos personalizados en `styles.css` compatibles con navegadores modernos.
 
 ---
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```text
 Catalogo_Artesanias_ArteTam/
@@ -65,7 +65,7 @@ No necesitas conocimientos avanzados de programación ni instalar bases de datos
 
 ---
 
-## 🚀 Guía de Instalación y Uso (Paso a Paso)
+##  Guía de Instalación y Uso (Paso a Paso)
 
 ### Opción 1: Descarga Directa (Para principiantes)
 
@@ -98,7 +98,7 @@ cd Catalogo_Artesanias_ArteTam
 
 ---
 
-## 🖥️ Cómo Ejecutar el Proyecto
+##  Cómo Ejecutar el Proyecto
 
 No se requiere instalar ninguna librería (`npm`, `node`, `python`, etc.). 
 
@@ -111,7 +111,7 @@ No se requiere instalar ninguna librería (`npm`, `node`, `python`, etc.).
 
 ---
 
-## 🌐 Despliegue Gratis en GitHub Pages
+##  Despliegue Gratis en GitHub Pages
 
 Si quieres que tu catálogo esté en línea para que cualquier persona pueda visitarlo mediante un enlace, puedes activar **GitHub Pages**:
 
@@ -124,7 +124,7 @@ Si quieres que tu catálogo esté en línea para que cualquier persona pueda vis
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 - **HTML5**: Estructuración semántica de cada vista web.
 - **CSS3**: Diseño, colores, maquetación y estilos responsivos.
@@ -133,7 +133,7 @@ Si quieres que tu catálogo esté en línea para que cualquier persona pueda vis
 
 ---
 
-## 🤝 Contribución
+##  Contribución
 
 ¡Las contribuciones, sugerencias y mejoras son bienvenidas! Si deseas aportar al proyecto:
 
@@ -145,4 +145,4 @@ Si quieres que tu catálogo esté en línea para que cualquier persona pueda vis
 
 ---
 
-✨ *Proyecto desarrollado para la preservación, difusión y comercialización del arte regional.*
+ *Proyecto desarrollado para la preservación, difusión y comercialización del arte regional.*
